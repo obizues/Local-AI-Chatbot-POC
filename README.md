@@ -1,3 +1,13 @@
+## 🖼️ System Diagram
+
+```mermaid
+graph TD
+   UserInput[User Input] --> ChatWindow[Chat Window]
+   ChatWindow --> LLMBackend[LLM Backend]
+   LLMBackend --> Retrieval[Retrieval]
+   Retrieval --> DataStore[Document/Data Store]
+   LLMBackend --> ChatWindow
+```
 # 🧠 Local AI Chatbot POC
 
 A hands-on AI project demonstrating semantic search, LLM chat, and feedback logging with a modern, production-ready Python/Streamlit stack. Inspired by the structure and best practices of [agentic-mortgage-research](https://github.com/obizues/agentic-mortgage-research).
@@ -25,9 +35,11 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
    ```
    streamlit run ui/app.py
    ```
+   (The new modern chat UI is integrated directly in ui/app.py. No need to use basic_chat.py.)
 
 ## 🛠️ Features
-- Streamlit UI for chat with LLM (Ollama and HuggingFace support)
+- Modern Streamlit chat UI with right-aligned chat bubbles and bottom-aligned messages
+- LLM support (Ollama and HuggingFace)
 - Semantic search and retrieval with FAISS and SentenceTransformers
 - Thumbs up/down feedback with logging
 - Semantic similarity and elapsed time metrics
@@ -35,7 +47,7 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
 - Devcontainer and GitHub Actions for reproducible development and uptime
 
 ## 📦 Project Structure
-- `ui/app.py` — Main Streamlit app
+- `ui/app.py` — Main Streamlit app (contains the new chat UI)
 - `llm_backend/` — LLM and RAG pipeline code
 - `ingestion/` — Data ingestion and chunking scripts
 - `vector_db/` — FAISS index and metadata

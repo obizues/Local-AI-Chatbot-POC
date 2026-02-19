@@ -5,3 +5,10 @@
 2. Run CI/CD pipeline.
 3. Notify QA for validation.
 4. Deploy to production after approval.","Ollama (llama2:7b-chat)","all-MiniLM-L6-v2","9.45","0.773","neutral",""
+"How do I deploy code?","To deploy code, follow these steps:
+
+1. Merge the code to the main branch.
+2. Run the CI/CD pipeline.
+3. Notify QA for validation.
+4. Deploy the code to production after obtaining approval.","Ollama (llama2:7b-chat)","all-MiniLM-L6-v2","50.92","0.754","neutral",""
+"how much pto do I have","You have 2 weeks of paid time off (PTO) per year.","Ollama (llama2:7b-chat)","all-MiniLM-L6-v2","34.21","0.477","neutral",""
