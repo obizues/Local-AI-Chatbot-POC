@@ -1,0 +1,5 @@
+Department: HR
+Sensitivity: internal
+Version: 1.0
+
+Benefits include health, dental, and vision insurance. See the HR portal for full details.

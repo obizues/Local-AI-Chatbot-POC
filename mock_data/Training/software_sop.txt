@@ -1,0 +1,5 @@
+Department: Training
+Sensitivity: public
+Version: 1.0
+
+Refer to the onboarding guide for software setup instructions.

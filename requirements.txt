@@ -1,0 +1,12 @@
+# Core requirements for local internal chat AI POC
+pymupdf
+python-docx
+pandas
+sentence-transformers
+faiss-cpu
+langchain
+llama-index
+streamlit
+gradi o
+flask
+flask-login
