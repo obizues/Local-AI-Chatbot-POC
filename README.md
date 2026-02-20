@@ -35,15 +35,19 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
    ```
    streamlit run ui/app.py
    ```
-   (The new modern chat UI is integrated directly in ui/app.py. No need to use basic_chat.py.)
+
+   (The new modern chat UI is integrated directly in ui/app.py. No need to use basic_chat.py. The `my_chat_component` folder has been removed as of v0.6.0.)
+
 
 ## 🛠️ Features
 - Modern Streamlit chat UI with right-aligned chat bubbles and bottom-aligned messages
+- LLM/model name always displayed after each response
 - LLM support (Ollama and HuggingFace)
 - Semantic search and retrieval with FAISS and SentenceTransformers
 - Thumbs up/down feedback with logging
 - Semantic similarity and elapsed time metrics
-- CSV logging of all interactions
+- CSV logging of all interactions (including LLM name and response time)
+- Improvements tracker in sidebar
 - Devcontainer and GitHub Actions for reproducible development and uptime
 
 ## 📦 Project Structure
@@ -58,6 +62,8 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
 - `.env.example` — Example environment variables
 - `ARCHITECTURE.md` — System architecture and design
 - `CHANGELOG.md` — Release history
+
+*Note: The `my_chat_component` folder has been removed as of v0.6.0.*
 
 ## 🔐 Security Notes
 - No API keys are committed

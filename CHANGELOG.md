@@ -1,4 +1,13 @@
+
 # Changelog
+
+## [0.6.0] - 2026-02-19
+### Added
+- Unified chat UI in `ui/app.py` (basic_chat.py deprecated)
+- Always display LLM/model name after each response
+- Improved retrieval accuracy and logging
+- Feedback and improvements tracker in sidebar
+- Removal of unused `my_chat_component` folder
 
 ## [0.2.0] - 2026-02-19
 ### Changed

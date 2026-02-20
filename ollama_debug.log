@@ -39,3 +39,96 @@
 [DEBUG] Calling Ollama subprocess. Prompt length: 841
 [DEBUG] Ollama subprocess finished. Return code: 1
 [DEBUG] No output. Stderr: [?2026h[?25l[1G⠋ [K[?25h[?2026l[?2026h[?25l[1G⠹ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.9 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 964
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?2026h[?25l[1G⠙ [K[?25h[?2026l[?2026h[?25l[1G⠸ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (5.2 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 965
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (4.7 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 963
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (4.4 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 963
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (5.1 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 869
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (4.9 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 842
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (4.5 GiB) than is available (3.9 GiB)
+[DEBUG] Calling Ollama subprocess. Prompt length: 839
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (4.5 GiB) than is available (3.9 GiB)
+[CHAT] Response time: 0.20s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (4.3 GiB)
+[CHAT] Response time: 0.25s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (4.0 GiB)
+[CHAT] Response time: 0.26s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.4 GiB)
+[CHAT] Response time: 0.23s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.5 GiB)
+[CHAT] Response time: 0.24s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.6 GiB)
+[CHAT] Response time: 0.24s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.3 GiB)
+[CHAT] Response time: 0.23s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.2 GiB)
+[CHAT] Response time: 0.26s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 1
+[DEBUG] No output. Stderr: [?2026h[?25l[1G⠙ [K[?25h[?2026l[?25l[?2026h[?25l[1G[K[?25h[?2026l[2K[1G[?25hError: 500 Internal Server Error: model requires more system memory (5.5 GiB) than is available (3.3 GiB)
+[CHAT] Response time: 0.25s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 33.36s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 38.24s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 32.47s
+[DEBUG] Calling Ollama subprocess. Prompt length: 850
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 43.79s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 22.63s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 38.46s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 38.92s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 39.64s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 48.19s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 39.94s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 39.22s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 3.60s
+[DEBUG] Calling Ollama subprocess. Prompt length: 1075
+[DEBUG] Ollama subprocess finished. Return code: 0
+[CHAT] Response time: 38.34s
