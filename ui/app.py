@@ -1,108 +1,22 @@
 
 import streamlit as st
 # --- Echo mode toggle for testing chat scroll ---
-st.sidebar.header('Test/Echo Mode')
-ECHO_MODE = st.sidebar.checkbox('Enable test echo (bot repeats you)')
 
 
-if not ECHO_MODE:
-    import os
-    import faiss
-    import numpy as np
-    import pandas as pd
-    from sentence_transformers import SentenceTransformer
-    from transformers import pipeline
-    import csv
-    import io
-    import time
 
-    from numpy import dot
-    from numpy.linalg import norm
-
-    def compute_max_similarity(answer, retrieved_texts, embed_model):
-        answer_emb = embed_model.encode([answer])[0]
-        chunk_embs = embed_model.encode([str(x) for x in retrieved_texts])
-        sims = [dot(answer_emb, c) / (norm(answer_emb) * norm(c)) for c in chunk_embs]
-        return max(sims) if sims else 0.0
-
-    st.set_page_config(page_title="Internal Chat AI", layout="wide")
-
-    # Reduce whitespace above the title
-    st.markdown('''
-        <style>
-        .block-container {
-            padding-top: 1.5rem !important;
-        }
-        h1, .stMarkdown h1 {
-            margin-top: 0.2em !important;
-        }
-        </style>
-    ''', unsafe_allow_html=True)
-    st.markdown('<h1 style="margin-bottom: 0.2em;">Internal Chat AI (POC)</h1>', unsafe_allow_html=True)
-
-<<<<<<< HEAD
-    # Embedding and generative model options
-    EMBED_MODEL_OPTIONS = [
-        'all-MiniLM-L6-v2',
-        # Add more embedding models here if needed
-    ]
-    OLLAMA_MODEL = "llama2:7b-chat"
-    GEN_MODEL_OPTIONS = [
-        'distilgpt2',
-        'gpt2',
-        'deepset/roberta-base-squad2',
-        f'Ollama ({OLLAMA_MODEL})',  # Show model name in dropdown
-        # Add more generative/extractive models here if needed
-    ]
-        for x in retrieved_chunks['text'].tolist():
-            if isinstance(x, str) and x.strip():
-                lowered = x.lower()
-                if not any(kw in lowered for kw in unrelated_keywords):
-                    filtered_texts.append(x)
-        context = "\n".join(filtered_texts)
-        context = "\n".join(
-            line for line in context.splitlines() if not line.strip().startswith("#")
-        )
-        prompt = (
-            "You are an expert assistant. Only use the information from the context that is directly relevant to the question. "
-            "If some context is unrelated, ignore it. Do not mention or add any notes, disclaimers, or statements about what is or isn't included or omitted. Do not mention onboarding or vacation policies unless the question is about those topics. Do not repeat or restate the steps in your answer. Just answer the question directly.\n"
-            f"Context:\n{context}\n\nQuestion: {query}\nAnswer:"
-        )
-        if GEN_MODEL_NAME == 'ollama':
-            import subprocess
-            ollama_path = r"C:\\Users\\mro84\\AppData\\Local\\Programs\\Ollama\\ollama.exe"
-            try:
-                import logging
-                log_path = os.path.join(os.path.dirname(__file__), '..', 'ollama_debug.log')
-                with open(log_path, 'a', encoding='utf-8') as logf:
-                    logf.write(f"[DEBUG] Calling Ollama subprocess. Prompt length: {len(prompt)}\n")
-                start = time.time()
-                result = subprocess.run([
-                    ollama_path, "run", "llama2:7b-chat"
-                ], input=prompt, capture_output=True, text=True, timeout=300, encoding="utf-8", errors="replace")
-                response_time = time.time() - start
-                with open(log_path, 'a', encoding='utf-8') as logf:
-                    logf.write(f"[DEBUG] Ollama subprocess finished. Return code: {result.returncode}\n")
-                response = result.stdout.strip()
-                if not response:
-                    with open(log_path, 'a', encoding='utf-8') as logf:
-                        logf.write(f"[DEBUG] No output. Stderr: {result.stderr.strip()}\n")
-                    response = f"[Ollama returned no output. Return code: {result.returncode}. Stderr: {result.stderr.strip()}]"
-            except Exception as e:
-                with open(log_path, 'a', encoding='utf-8') as logf:
-                    logf.write(f"[DEBUG] Exception: {e}\n")
-                response = f"[Ollama error: {e}]"
-            return response, response_time
-        elif llm is not None:
-            start = time.time()
-            response = llm(prompt)[0]['generated_text']
-            response_time = time.time() - start
-            return response, response_time
-        else:
-            return '[Error: No generative model is loaded!]', 0
-=======
+import os
+from sentence_transformers import SentenceTransformer
+import pandas as pd
+import faiss
+import csv
+import io
+import time
 
 
+from numpy import dot
+from numpy.linalg import norm
+
+# Model options (must be defined before use)
 OLLAMA_MODEL = "llama2:7b-chat"
 OLLAMA_MODEL_MISTRAL = "mistral"
 GEN_MODEL_OPTIONS = [
@@ -110,18 +24,37 @@ GEN_MODEL_OPTIONS = [
     'gpt2',
     'deepset/roberta-base-squad2',
     f'Ollama ({OLLAMA_MODEL})',
-    f'Ollama ({OLLAMA_MODEL_MISTRAL})',
-    # Add more generative/extractive models here if needed
+    f'Ollama ({OLLAMA_MODEL_MISTRAL})'
 ]
 
-# Ensure GEN_MODEL_NAME is always defined
-GEN_MODEL_NAME = None
+def compute_max_similarity(answer, retrieved_texts, embed_model):
+    answer_emb = embed_model.encode([answer])[0]
+    chunk_embs = embed_model.encode([str(x) for x in retrieved_texts])
+    sims = [dot(answer_emb, c) / (norm(answer_emb) * norm(c)) for c in chunk_embs]
+    return max(sims) if sims else 0.0
+
+st.set_page_config(page_title="Internal Chat AI", layout="wide")
+
+# Reduce whitespace above the title
+st.markdown('''
+<style>
+.block-container {
+    padding-top: 1.5rem !important;
+}
+h1, .stMarkdown h1 {
+    margin-top: 0.2em !important;
+    }
+    </style>
+''', unsafe_allow_html=True)
+st.markdown('<h1 style="margin-bottom: 0.2em;">Internal Chat AI (POC)</h1>', unsafe_allow_html=True)
+
+
 
 
 
 # --- Echo mode toggle for testing chat scroll ---
 st.sidebar.header('Test/Echo Mode')
-ECHO_MODE = st.sidebar.checkbox('Enable test echo (bot repeats you)')
+ECHO_MODE = st.sidebar.checkbox('Enable test echo (bot repeats you)', key='echo_mode_checkbox')
 
 # Model selection UI (generative model only) - now on main page
 if ECHO_MODE:
@@ -145,7 +78,7 @@ else:
 
     # Model loading timers
     load_times = {}
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
+    # ...existing code...
 
     # Load FAISS index and metadata
     data_dir = os.path.join(os.path.dirname(__file__), '../vector_db')
@@ -154,7 +87,6 @@ else:
     metadata = pd.read_csv(os.path.join(data_dir, 'metadata.csv'))
     retrieval_time = time.time() - retrieval_start
 
-<<<<<<< HEAD
     # Model loading timers
     load_times = {}
 
@@ -168,7 +100,9 @@ else:
     metadata = pd.read_csv(os.path.join(data_dir, 'metadata.csv'))
     retrieval_time = time.time() - retrieval_start
 
-    # Load embedding model (no timing)
+
+    # Use fixed embedding model
+    EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
     embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 
     # Set up generative model (no timing)
@@ -184,13 +118,8 @@ else:
 
 
 
-    # Show current models side by side
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write(f"**Embedding Model:** {EMBED_MODEL_NAME}")
-    with col2:
-        st.write(f"**Generative Model:** {gen_model_display}")
-=======
+    # Show only generative model
+    st.write(f"**Generative Model:** {gen_model_display}")
     # Use fixed embedding model
     EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
     embed_model = SentenceTransformer(EMBED_MODEL_NAME)
@@ -202,7 +131,7 @@ else:
     else:
         llm = pipeline('text-generation', model=GEN_MODEL_NAME, device=-1, max_new_tokens=256)
         gen_model_display = GEN_MODEL_NAME.upper()
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
+    # ...existing code...
 
 # --- Move retrieve and generate_answer above chat UI ---
 def retrieve(query, top_k=3):
@@ -348,10 +277,8 @@ st.markdown('''
 </style>
 ''', unsafe_allow_html=True)
 
-<<<<<<< HEAD
 
 # Scrollable chat window with fixed height, messages start at bottom
-=======
  # Scrollable chat window with fixed height, messages start at bottom
 
 # Render messages in normal order (newest at bottom) with feedback
@@ -360,7 +287,7 @@ st.markdown('''
 
 import uuid
 
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
+    # ...existing code...
 chat_html = '<div class="scrollable-chat-window">'
 for idx, entry in enumerate(reversed(st.session_state.get('history', []))):
     # Unpack entry
@@ -374,24 +301,23 @@ for idx, entry in enumerate(reversed(st.session_state.get('history', []))):
         response_time = None
         extra = ''
 
-    # Show feedback (if present and not neutral), otherwise show LLM used
-    feedback_display = ''
-    llm_display = ''
-    if extra in ['up', 'down']:
-        if extra == 'up':
-            feedback_display = ' <span style="color:green;">👍</span>'
-        elif extra == 'down':
-            feedback_display = ' <span style="color:red;">👎</span>'
-    elif extra and extra not in ['neutral', '']:
+    # Always show response time and LLM model at the bottom of the bot message
+    # If extra is empty or 'neutral', use the current LLM name
+    if extra and extra not in ['neutral', '']:
         llm_display = f' | {extra}'
-
+    else:
+        # Use the current LLM for display
+        llm_display = f' | Ollama ({OLLAMA_MODEL_SELECTED})' if GEN_MODEL_NAME == 'ollama' else f' | {GEN_MODEL_NAME} (generative)'
     if response_time is not None:
         time_llm_html = f'<span style="font-size:0.85em;color:#888;">({response_time:.2f}s{llm_display})</span>'
     else:
         time_llm_html = ''
     chat_html += f'<div>'
     chat_html += f'<div class="chat-bubble-user">🧑 <b>You:</b> {user}</div>'
-    chat_html += f'<div class="chat-bubble-bot">🤖 <b>Bot:</b> {bot}{feedback_display} {time_llm_html}</div>'  # close chat-bubble-bot
+    chat_html += f'<div class="chat-bubble-bot">🤖 <b>Bot:</b> {bot}'
+    if time_llm_html:
+        chat_html += f'<br><span style="display:block;text-align:right;margin-top:4px;font-size:0.95em;color:#555;">{time_llm_html}</span>'
+    chat_html += '</div>'
     chat_html += f'</div>'
 chat_html += '</div>'
 st.markdown(chat_html, unsafe_allow_html=True)
@@ -423,19 +349,19 @@ st.markdown('<div class="input-bar">', unsafe_allow_html=True)
 with st.form(key='chat_input_form', clear_on_submit=True):
     user_input = st.text_input("Message", "", key="user_input")
     submitted = st.form_submit_button("Send")
-<<<<<<< HEAD
     if submitted and user_input.strip():
         if 'ECHO_MODE' in globals() and ECHO_MODE:
             bot_response = f'[echo] {user_input}'
-            st.session_state.setdefault('history', []).append((user_input, bot_response))
+            llm_used = f"Ollama ({OLLAMA_MODEL_SELECTED})" if GEN_MODEL_NAME == 'ollama' else f"{GEN_MODEL_NAME} (generative)"
+            st.session_state.setdefault('history', []).append((user_input, bot_response, 0.0, llm_used))
             st.rerun()
         else:
             # Use actual retrieval and model logic
             retrieved = retrieve(user_input)
-            bot_response, _ = generate_answer(user_input, retrieved)
-            st.session_state.setdefault('history', []).append((user_input, bot_response))
+            bot_response, response_time = generate_answer(user_input, retrieved)
+            llm_used = f"Ollama ({OLLAMA_MODEL_SELECTED})" if GEN_MODEL_NAME == 'ollama' else f"{GEN_MODEL_NAME} (generative)"
+            st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, llm_used))
             st.rerun()
-=======
     if submitted and user_input.strip() and ECHO_MODE:
         bot_response = f'[echo] {user_input}'
         llm_used = f"Ollama ({OLLAMA_MODEL_SELECTED})" if GEN_MODEL_NAME == 'ollama' else f"{GEN_MODEL_NAME} (generative)"
@@ -490,7 +416,7 @@ with st.form(key='chat_input_form', clear_on_submit=True):
         llm_used = f"Ollama ({OLLAMA_MODEL_SELECTED})" if GEN_MODEL_NAME == 'ollama' else f"{GEN_MODEL_NAME} (generative)"
         st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, llm_used))
         st.rerun()
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
+    # ...existing code...
 st.markdown('</div>', unsafe_allow_html=True)
 
 def retrieve(query, top_k=3):
@@ -560,7 +486,6 @@ if not ECHO_MODE:
     else:
         MODEL_TYPE = f'{GEN_MODEL_NAME} (generative)'
 
-<<<<<<< HEAD
     # Section to view demo results log
     st.sidebar.header('Demo Results Log')
     if st.sidebar.button('Refresh Log'):
@@ -574,7 +499,6 @@ if not ECHO_MODE:
             writer = csv.writer(f, quoting=csv.QUOTE_ALL)
             writer.writerow(header)
 
-=======
 
 # --- Collapsible Demo Results Log ---
 with st.sidebar.expander('Demo Results Log', expanded=False):
@@ -589,14 +513,13 @@ with st.sidebar.expander('Demo Results Log', expanded=False):
             writer = csv.writer(f, quoting=csv.QUOTE_ALL)
             writer.writerow(header)
 
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
+    # ...existing code...
     if os.path.isfile(log_path):
         try:
             log_df = pd.read_csv(log_path, quoting=csv.QUOTE_ALL, quotechar='"', engine='python')
             # If columns don't match, rewrite file with new header
             if list(log_df.columns) != expected_columns:
                 rewrite_csv_with_header(log_path, expected_columns)
-<<<<<<< HEAD
                 st.sidebar.warning('Log file format changed. The log was reset to match the new format.')
             else:
                 st.sidebar.dataframe(log_df)
@@ -606,16 +529,7 @@ with st.sidebar.expander('Demo Results Log', expanded=False):
             st.sidebar.error(f'Log file was malformed and has been reset. Error: {e}')
     else:
         st.sidebar.info('No demo results logged yet.')
-=======
-                st.warning('Log file format changed. The log was reset to match the new format.')
-            else:
-                st.dataframe(log_df)
-        except Exception as e:
-            # If error, rewrite file with new header and show message
-            rewrite_csv_with_header(log_path, expected_columns)
-            st.error(f'Log file was malformed and has been reset. Error: {e}')
-    else:
-        st.info('No demo results logged yet.')
+
 
 # --- Collapsible Improvements Tracker (Retrieval/Indexing/LLM/Settings only) ---
 with st.sidebar.expander('Retrieval & Indexing Improvements', expanded=False):
@@ -629,4 +543,3 @@ with st.sidebar.expander('Retrieval & Indexing Improvements', expanded=False):
     ]
     for i, item in enumerate(improvements, 1):
         st.markdown(f"**{i}.** {item}")
->>>>>>> 3f571a4 (v0.6.0: Feature set 0.6.0 - always show LLM name after response time, patch old chat history, improvements to retrieval and logging)
