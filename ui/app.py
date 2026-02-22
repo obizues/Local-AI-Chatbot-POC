@@ -53,7 +53,72 @@ st.set_page_config(page_title="Internal Chat AI", layout="wide")
 # Always show the header, regardless of model
 
 
-st.markdown(header_html, unsafe_allow_html=True)
+
+
+# Add a colored top banner and remove all whitespace above header
+
+# Add a colored top banner with the main header text inside, and remove duplicate header below
+
+# Fix banner so text is never cut off and always visible
+
+# Vertically center the text in the top banner using flexbox
+
+# Vertically center the text baseline in the banner using line-height and emoji alignment
+
+# Use flexbox for perfect vertical centering in the banner
+
+# Use fixed height and flexbox for perfect vertical centering in the banner
+banner_html = '''
+<style>
+    .top-banner {
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background: linear-gradient(90deg, #1976d2 0%, #64b5f6 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(33,150,243,0.08);
+        text-align: center;
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        margin: 0;
+        font-size: 2.1em;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        box-sizing: border-box;
+        overflow: visible;
+        height: 4.2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    .top-banner .banner-emoji {
+        font-size: 1.1em;
+        vertical-align: middle;
+        margin-right: 0.18em;
+        position: relative;
+        top: 0;
+    }
+    .banner-spacer {
+        height: 4.2em;
+    }
+    @media (max-width: 600px) {
+        .top-banner { font-size: 1.2em; height: 3.1em; }
+        .banner-spacer { height: 3.1em; }
+    }
+</style>
+<div class="top-banner">
+    <span class="banner-emoji"><br>🤖</span><br>Welcome to your private, local AI Chatbot
+</div>
+<script>
+// Remove Streamlit's default top padding
+const stApp = window.parent.document.querySelector('section.main');
+if (stApp) { stApp.style.paddingTop = '0px'; }
+</script>
+<div class="banner-spacer"></div>
+'''
+st.markdown(banner_html, unsafe_allow_html=True)
 
 user_info_html = """
 <style>
@@ -546,77 +611,61 @@ def generate_answer(query, retrieved_chunks):
         return response, response_time
 
 
+
 if not ECHO_MODE:
     # Streamlit UI
 
     # Track model type for logging (dynamic)
 
-
-
-# Collapsible sidebar sections (default collapsed)
-
-    st.markdown("""
-    <b>Portfolio Project</b><br><br>
-    This is a demonstration of agentic AI architecture built to showcase:
-    <ul style='margin-top: 6px; margin-bottom: 0;'>
-        <li>Multi-agent LLM orchestration</li>
-        <li>Multi-round debate system with consensus building</li>
-        <li>Historical learning with outcome validation</li>
-        <li>Real-time UI with streaming updates</li>
-        <li>Production-grade patterns</li>
-        <li>System design thinking</li>
-    </ul>
+    # Collapsible sidebar sections (default collapsed)
+    st.sidebar.markdown(f"""
+    <div class='sidebar-card' style='font-size:0.97em;padding:8px 12px 6px 12px;'>
+        <span style='font-size:1.05em;'>&#128241;</span> <b style='font-size:1em;'>App version:</b><br>
+        <span style='font-size:0.95em;'>{APP_VERSION} - Demo UI Polishing</span>
+    </div>
+    <div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
+        <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
+            <span style=\"font-size:1.05em;vertical-align:middle;\">&#129302;</span> AI Search & Knowledge System
+        </div>
+        <div style='margin:0 0 0 0;font-size:0.91em;line-height:1.35;text-align:center;'>
+            <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+                <span style=\"font-size:1em;\">&#128269;</span> <span>Semantic Search</span>
+            </div>
+            <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+                <span style=\"font-size:1em;\">&#128196;</span> <span>Document Q&amp;A</span>
+            </div>
+            <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+                <span style=\"font-size:1em;\">&#128737;</span> <span>Private, Local LLM</span>
+            </div>
+            <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+                <span style=\"font-size:1em;\">&#9889;</span> <span>Fast, Modern UI</span>
+            </div>
+            <div style='display:flex;align-items:center;justify-content:center;gap:6px;'>
+                <span style=\"font-size:1em;\">&#128202;</span> <span>Feedback Logging</span>
+            </div>
+        </div>
+    </div>
     """, unsafe_allow_html=True)
 
+    # Restore About This Project expander at the top
+    with st.sidebar.expander("ℹ️ About This Project", expanded=False):
+        st.markdown("""
+        <div style='font-size:1.15em;font-weight:700;margin-bottom:6px;'>Portfolio Project</div>
+        <div style='margin-bottom:10px;'>
+            This is a demonstration of a <b>Chatbot</b> for private, local document Q&amp;A and semantic search, featuring:
+        </div>
+        <ul style='margin-top: 6px; margin-bottom: 0; padding-left: 18px;'>
+            <li>Conversational Q&amp;A over your internal documents</li>
+            <li>Natural language chat interface with context retention</li>
+            <li>Historical learning and context-aware chat memory</li>
+            <li>Private, local LLM (Ollama or HuggingFace) with no cloud dependency</li>
+            <li>Semantic search over internal documents using FAISS and embeddings</li>
+            <li>Modern, real-time UI with Streamlit</li>
+            <li>Production-grade, modular Python codebase</li>
+        </ul>
+        """, unsafe_allow_html=True)
 
-st.sidebar.markdown(f"""
-<div class='sidebar-card' style='font-size:0.97em;padding:8px 12px 6px 12px;'>
-    <span style='font-size:1.05em;'>&#128241;</span> <b style='font-size:1em;'>App version:</b><br>
-    <span style='font-size:0.95em;'>{APP_VERSION} - Demo UI Polishing</span>
-</div>
-<div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
-    <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
-        <span style=\"font-size:1.05em;vertical-align:middle;\">&#129302;</span> AI Search & Knowledge System
-    </div>
-    <div style='margin:0 0 0 0;font-size:0.91em;line-height:1.35;text-align:center;'>
-        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128269;</span> <span>Semantic Search</span>
-        </div>
-        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128196;</span> <span>Document Q&amp;A</span>
-        </div>
-        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128737;</span> <span>Private, Local LLM</span>
-        </div>
-        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#9889;</span> <span>Fast, Modern UI</span>
-        </div>
-        <div style='display:flex;align-items:center;justify-content:center;gap:6px;'>
-            <span style=\"font-size:1em;\">&#128202;</span> <span>Feedback Logging</span>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Restore About This Project expander at the top
-with st.sidebar.expander("ℹ️ About This Project", expanded=False):
-    st.markdown("""
-    <div style='font-size:1.15em;font-weight:700;margin-bottom:6px;'>Portfolio Project</div>
-    <div style='margin-bottom:10px;'>
-        This is a demonstration of a <b>Chatbot</b> for private, local document Q&amp;A and semantic search, featuring:
-    </div>
-    <ul style='margin-top: 6px; margin-bottom: 0; padding-left: 18px;'>
-        <li>Conversational Q&amp;A over your internal documents</li>
-        <li>Natural language chat interface with context retention</li>
-        <li>Historical learning and context-aware chat memory</li>
-        <li>Private, local LLM (Ollama or HuggingFace) with no cloud dependency</li>
-        <li>Semantic search over internal documents using FAISS and embeddings</li>
-        <li>Modern, real-time UI with Streamlit</li>
-        <li>Production-grade, modular Python codebase</li>
-    </ul>
-    """, unsafe_allow_html=True)
-
-with st.sidebar.expander("📁 Project Documentation", expanded=False):
+    with st.sidebar.expander("📁 Project Documentation", expanded=False):
         st.markdown("""
         <div style='font-size:1.12em;font-weight:700;margin-bottom:6px;'>Project Documentation</div>
         <div style='margin-bottom:8px;'>
@@ -638,7 +687,7 @@ with st.sidebar.expander("📁 Project Documentation", expanded=False):
             <li>Architectural decision records</li>
         </ul>
         """, unsafe_allow_html=True)
-with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
+    with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
         st.markdown("""
         <span style='font-size:1em;'>
         <ul style='margin-bottom:0; padding-left: 18px;'>
@@ -657,7 +706,7 @@ with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
         </ul>
         </span>
         """, unsafe_allow_html=True)
-with st.sidebar.expander("📝 System Design Notes", expanded=False):
+    with st.sidebar.expander("📝 System Design Notes", expanded=False):
         st.markdown("""
         <div style='font-size:1.12em;font-weight:700;margin-bottom:8px;'>📋 System Design Notes</div>
         <ul style='margin-bottom:0; padding-left: 18px;'>
