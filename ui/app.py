@@ -5,7 +5,7 @@ import faiss
 import time
 
 # Define app version at the top
-APP_VERSION = "v0.8.0"
+APP_VERSION = "v0.9.0"
 ECHO_MODE = False
 GEN_MODEL_NAME = 'ollama'
 GEN_MODEL_NAME_DISPLAY = 'Ollama'
