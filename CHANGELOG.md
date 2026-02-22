@@ -1,11 +1,14 @@
-# [0.8.0] - 2026-02-21
+
+# [0.9.0] - 2026-02-22
 ### Added
-- Modern, compact chat UI with colored header and sidebar sections
-- Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version
-- Unified chat logic in `ui/app.py` (no more `basic_chat.py`)
-- Robust FAISS index and metadata loading
-- Bugfixes for NameError and UI rendering
-- All chat UI and logic now in `ui/app.py`
+- Unified, modern chat UI with colored header, sidebar, and persistent model display
+- Sidebar: About, Project Documentation, Tech Stack, System Design Notes, App Version
+- Conversational Q&A over internal documents (PDF, DOCX, TXT)
+- Semantic search and retrieval with FAISS and SentenceTransformers
+- LLM support: Ollama (local) and HuggingFace Transformers (cloud/local)
+- Feedback logging, semantic similarity, and response time metrics
+- CSV logging of all interactions for evaluation
+- Modular, extensible Python codebase
 
 
 # Changelog

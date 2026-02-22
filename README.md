@@ -1,6 +1,7 @@
+
 ## 🖼️ System Diagram
 
-> **Version:** v0.8.0 — February 21, 2026
+> **Version:** v0.9.0 — February 22, 2026
 
 
 ```mermaid
@@ -11,9 +12,10 @@ graph TD
    Retrieval --> DataStore[Document/Data Store]
    LLMBackend --> ChatWindow
 ```
-# 🧠 Local AI Chatbot POC
 
-A hands-on AI project demonstrating semantic search, LLM chat, and feedback logging with a modern, production-ready Python/Streamlit stack. Inspired by the structure and best practices of [agentic-mortgage-research](https://github.com/obizues/agentic-mortgage-research).
+# 🤖 Local AI Chatbot POC
+
+A hands-on AI project for private, local document Q&A and semantic search, featuring a modern, production-ready Python/Streamlit stack. Includes a unified chat UI, sidebar with documentation, tech stack, and system design notes, and robust feedback logging. Inspired by [agentic-mortgage-research](https://github.com/obizues/agentic-mortgage-research).
 
 ## 🚀 Quick Start
 
@@ -42,22 +44,16 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
    (The new modern chat UI is integrated directly in ui/app.py. No need to use basic_chat.py. The `my_chat_component` folder has been removed as of v0.6.0.)
 
 
-## 🛠️ Features (v0.8.0)
-* Modern, compact Streamlit chat UI with colored header, sidebar sections, and centered user info
-* Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version
-* Unified chat logic in `ui/app.py` (no more `basic_chat.py`)
-* Always display LLM/model name after each response
-* Robust FAISS index and metadata loading
-* Semantic search and retrieval with SentenceTransformers
-* Feedback logging, semantic similarity, response time metrics
-* CSV logging of all interactions
-* Devcontainer and GitHub Actions for reproducible development
-- Modern Streamlit chat UI with right-aligned chat bubbles and bottom-aligned messages
-- LLM/model name always displayed after each response
-- LLM support (Ollama and HuggingFace)
+## 🚀 Features (v0.9.0)
+- Modern, unified Streamlit chat UI with colored header, sidebar, and persistent model display
+- Sidebar: About, Project Documentation, Tech Stack, System Design Notes, App Version
+- Conversational Q&A over your internal documents (PDF, DOCX, TXT)
 - Semantic search and retrieval with FAISS and SentenceTransformers
-- Thumbs up/down feedback with logging
-- Semantic similarity and elapsed time metrics
+- LLM support: Ollama (local) and HuggingFace Transformers (cloud/local)
+- Feedback logging, semantic similarity, and response time metrics
+- CSV logging of all interactions for evaluation
+- Modular, extensible Python codebase
+- Devcontainer and GitHub Actions for reproducible development
 - CSV logging of all interactions (including LLM name and response time)
 - Improvements tracker in sidebar
 - Devcontainer and GitHub Actions for reproducible development and uptime
