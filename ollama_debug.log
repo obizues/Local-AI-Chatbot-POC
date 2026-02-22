@@ -168,3 +168,7 @@
 [DEBUG] Exception: name 'OLLAMA_MODEL_SELECTED' is not defined
 [DEBUG] Calling Ollama subprocess. Prompt length: 486
 [DEBUG] Ollama subprocess finished. Return code: 0
+[DEBUG] Calling Ollama subprocess. Prompt length: 476
+[DEBUG] Ollama subprocess finished. Return code: 0
+[DEBUG] Calling Ollama subprocess. Prompt length: 486
+[DEBUG] Ollama subprocess finished. Return code: 0

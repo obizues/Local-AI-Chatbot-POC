@@ -1,100 +1,35 @@
 
-# --- Define ECHO_MODE ---
-ECHO_MODE = False
-
-# --- Define model name variables ---
-GEN_MODEL_NAME = 'ollama'  # or your default model name
-GEN_MODEL_NAME_DISPLAY = 'Ollama'
-import os
-import time
+import streamlit as st
+from sentence_transformers import SentenceTransformer
 import faiss
+import time
+
+# Define app version at the top
+APP_VERSION = "v0.8.0"
+ECHO_MODE = False
+GEN_MODEL_NAME = 'ollama'
+GEN_MODEL_NAME_DISPLAY = 'Ollama'
+header_html = """
+<style>
+.main-title-banner { display: flex; align-items: center; justify-content: flex-start; border-radius: 14px; padding: 12px 24px 10px 18px; margin-bottom: 0; box-shadow: 0 2px 12px rgba(33,150,243,0.08); font-family: 'Segoe UI', 'Arial', sans-serif; }
+.main-title-banner .header-icon { font-size: 2.2rem; margin-right: 18px; filter: drop-shadow(0 1px 2px #90caf9); }
+.main-title-banner .header-text { font-size: 2.1rem; font-weight: 700; color: #1976d2; letter-spacing: 0.5px; text-shadow: 0 1px 0 #fff, 0 2px 6px #90caf9; }
+</style>
+<div class="main-title-banner"><span class="header-icon">&#127979;&#65039;</span><span class="header-text">Internal Chat AI (POC)</span></div>
+"""
+
+import streamlit as st
+import os
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
-
-import streamlit as st
 
 # Use fixed embedding model
 EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 
-# Set up generative model (no timing)
-if GEN_MODEL_NAME == 'ollama':
-    llm = None  # Placeholder, handled in generate_answer
-    gen_model_display = GEN_MODEL_NAME_DISPLAY
-else:
-    llm = pipeline('text-generation', model=GEN_MODEL_NAME, device=-1, max_new_tokens=256)
-    gen_model_display = GEN_MODEL_NAME.upper()
-    # ...existing code...
 
-import os
-import time
-import faiss
-import pandas as pd
-from sentence_transformers import SentenceTransformer
-
-import streamlit as st
-
-
-# --- Modern header banner ---
-
-import subprocess
-def get_app_version():
-        try:
-                return subprocess.check_output(["git", "describe", "--tags", "--abbrev=0"], encoding="utf-8").strip()
-        except Exception:
-                return "v1.0.0"
-APP_VERSION = get_app_version()
-header_html = f"""
-<style>
-.main-title-banner {{
-    background: linear-gradient(90deg, #2196f3 0%, #00bfae 100%);
-    color: #fff;
-    padding: 6px 6px 4px 6px;
-    border-radius: 8px;
-    margin-bottom: 2px;
-    text-align: center;
-    font-size: 1.25em;
-    font-weight: 600;
-}}
-.user-info-card {{
-    background: #f7f7f7;
-    color: #222;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    padding: 4px 8px 4px 8px;
-    margin-bottom: 2px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}}
-.user-info-links {{
-    margin-top: 4px;
-    font-size: 0.95em;
-}}
-</style>
-<div class="main-title-banner">
-    Internal Chat AI (POC)
-</div>
-<div class="user-info-card" style="text-align:center;">
-    <div style="font-size:1.15em;font-weight:600;color:#1976d2;text-align:center;">Chris Obermeier | SVP of Engineering</div>
-    <div style="margin-bottom:6px;text-align:center;">Enterprise & PE-Backed Platform Modernization | AI & Data-Driven Transformation</div>
-    <div class="user-info-links" style="text-align:center;margin-top:8px;">
-            <span>
-                <a href="https://www.linkedin.com/in/chris-obermeier" target="_blank" style="color:#1976d2;text-decoration:underline;">LinkedIn</a> |
-                <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">GitHub</a> |
-                <a href="mailto:chris.obermeier@gmail.com" style="color:#1976d2;text-decoration:underline;">Email</a>
-            </span>
-            <br>
-            <span>
-                ⭐ <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">Star on GitHub</a> |
-                📖 <a href="https://github.com/obizues/Local-AI-Chatbot-POC#readme" target="_blank" style="color:#1976d2;text-decoration:underline;">Read Documentation</a> |
-                🎓 <a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md" target="_blank" style="color:#1976d2;text-decoration:underline;">View Architecture</a>
-            </span>
-        </div>
-</div>
-"""
-st.markdown(header_html, unsafe_allow_html=True)
+# Always show the header, regardless of model
 
 
 from numpy import dot
@@ -112,7 +47,70 @@ GEN_MODEL_OPTIONS = [
     f'Ollama ({OLLAMA_MODEL})',
     f'Ollama ({OLLAMA_MODEL_MISTRAL})'
 ]
+
 st.set_page_config(page_title="Internal Chat AI", layout="wide")
+
+# Always show the header, regardless of model
+
+
+st.markdown(header_html, unsafe_allow_html=True)
+
+user_info_html = """
+<style>
+.user-info-card {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 14px 20px 10px 20px;
+    margin-top: 0;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 6px rgba(33,150,243,0.06);
+    text-align: center;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+.user-info-card .user-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 2px;
+}
+.user-info-card .user-subtitle {
+    font-size: 0.84rem;
+    color: #2196f3;
+    margin-bottom: 5px;
+}
+.user-info-links {
+    margin-top: 3px;
+    font-size: 0.89em;
+}
+.user-info-links a {
+    color: #1976d2;
+    text-decoration: underline;
+    margin: 0 2px;
+}
+.user-info-links .link-block {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.83em;
+}
+</style>
+<div class="user-info-card">
+    <div class="user-title">Chris Obermeier | SVP of Engineering</div>
+    <div class="user-subtitle">Enterprise &amp; PE-Backed Platform Modernization | AI &amp; Data-Driven Transformation</div>
+    <div class="user-info-links">
+        <span>
+            <a href="https://www.linkedin.com/in/chris-obermeier" target="_blank">LinkedIn</a> |
+            <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank">GitHub</a> |
+            <a href="mailto:chris.obermeier@gmail.com">Email</a>
+        </span>
+        <span class="link-block">
+            &#11088; <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank">Star on GitHub</a> |
+            &#128214; <a href="https://github.com/obizues/Local-AI-Chatbot-POC#readme" target="_blank">Read Documentation</a> |
+            &#127891; <a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md" target="_blank">View Architecture</a>
+        </span>
+    </div>
+</div>
+"""
+st.markdown(user_info_html, unsafe_allow_html=True)
 
 
 EMBED_MODEL_NAME = 'all-MiniLM-L6-v2'
@@ -188,13 +186,9 @@ else:
     emb_dim = 384  # all-MiniLM-L6-v2 output dim
     index = faiss.IndexFlatL2(emb_dim)
 
+
 def generate_answer(query, retrieved_chunks):
-    # Echo mode for testing chat scroll
-    if 'ECHO_MODE' in globals() and ECHO_MODE:
-        return f'[echo] {query}', 0
-    import time
-    response_time = None
-    unrelated_keywords = ["onboarding", "welcome", "paperwork"]
+    unrelated_keywords = ["vacation", "paid vacation", "HR portal", "onboarding", "welcome", "paperwork"]
     filtered_texts = []
     for x in retrieved_chunks['text'].tolist():
         if isinstance(x, str) and x.strip():
@@ -237,11 +231,32 @@ def generate_answer(query, retrieved_chunks):
         return response, response_time
     else:
         start = time.time()
-        response = llm(prompt)[0]['generated_text']
+        if llm is not None:
+            response = llm(prompt)[0]['generated_text']
+        else:
+            response = '[LLM pipeline not initialized]'
         response_time = time.time() - start
         return response, response_time
 
-# --- Injected Modern Chat UI ---
+
+# --- LLM Model Selection and Display ---
+
+
+
+    
+with st.container():
+    st.markdown('<div class="model-select-row"><span class="model-select-label">LLM Model:</span></div>', unsafe_allow_html=True)
+    selected_model = st.selectbox(
+        "LLM Model",
+        GEN_MODEL_OPTIONS,
+        index=GEN_MODEL_OPTIONS.index('Ollama (llama2:7b-chat)'),
+        key="llm_model_select",
+        label_visibility="collapsed"
+    )
+
+# Update model selection in session state (if needed)
+if 'selected_model' not in st.session_state or st.session_state['selected_model'] != selected_model:
+    st.session_state['selected_model'] = selected_model
 
 def retrieve(query, top_k=3):
     query_emb = embed_model.encode([query]).astype('float32')
@@ -275,8 +290,8 @@ if st.session_state['history']:
 st.markdown('''
 <style>
 .scrollable-chat-window {
-    max-width: 700px;
-    margin: 0 auto 2px auto;
+    width: 100%;
+    margin: 0;
     height: 180px;
     overflow-y: scroll;
     padding: 0 2px 0 2px;
@@ -324,10 +339,10 @@ st.markdown('''
     background: #fafbfc;
 }
 .input-bar {
-    max-width: 700px;
-    margin: 0 auto 0 auto;
+    width: 100%;
+    margin: 0;
     background: #fff;
-    padding: 0px 0 0 0;
+    padding: 0;
 }
 </style>
 ''', unsafe_allow_html=True)
@@ -341,7 +356,6 @@ st.markdown('''
 
 
 import uuid
-
     # ...existing code...
 chat_html = '<div class="scrollable-chat-window">'
 for idx, entry in enumerate(reversed(st.session_state.get('history', []))):
@@ -536,67 +550,129 @@ if not ECHO_MODE:
     # Streamlit UI
 
     # Track model type for logging (dynamic)
-    if GEN_MODEL_NAME == 'ollama':
-        MODEL_TYPE = f'Ollama ({OLLAMA_MODEL})'
-    else:
-        MODEL_TYPE = f'{GEN_MODEL_NAME} (generative)'
 
 
-    # --- Custom Sidebar Layout ---
-    # Sidebar info cards
-    st.sidebar.markdown(f"""
-    <div style='background:#eaf6ff;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:1.1em;'>
-        <b>Local AI Chatbot POC</b><br>
-        Modern, production-ready chat UI with semantic search, LLM integration, and feedback logging.<br>
-        <span style='font-size:0.95em;'>Inspired by <a href='https://github.com/obizues/agentic-mortgage-research' target='_blank'>agentic-mortgage-research</a>.</span><br>
-        <b>App Version:</b> {APP_VERSION}
-    </div>
+
+# Collapsible sidebar sections (default collapsed)
+
+    st.markdown("""
+    <b>Portfolio Project</b><br><br>
+    This is a demonstration of agentic AI architecture built to showcase:
+    <ul style='margin-top: 6px; margin-bottom: 0;'>
+        <li>Multi-agent LLM orchestration</li>
+        <li>Multi-round debate system with consensus building</li>
+        <li>Historical learning with outcome validation</li>
+        <li>Real-time UI with streaming updates</li>
+        <li>Production-grade patterns</li>
+        <li>System design thinking</li>
+    </ul>
     """, unsafe_allow_html=True)
 
-    # Collapsible sidebar sections (default collapsed)
-    with st.sidebar.expander("ℹ️ About This Project", expanded=False):
-        st.markdown(f"""
-        <span style='font-size:1em;'>
-        <b>Local AI Chatbot POC</b> — Modern, production-ready chat UI with semantic search, LLM integration, and feedback logging.<br>
-        Inspired by <a href='https://github.com/obizues/agentic-mortgage-research' target='_blank'>agentic-mortgage-research</a>.<br>
-        <b>Version:</b> {APP_VERSION} — February 21, 2026
-        </span>
+
+st.sidebar.markdown(f"""
+<div class='sidebar-card' style='font-size:0.97em;padding:8px 12px 6px 12px;'>
+    <span style='font-size:1.05em;'>&#128241;</span> <b style='font-size:1em;'>App version:</b><br>
+    <span style='font-size:0.95em;'>{APP_VERSION} - Demo UI Polishing</span>
+</div>
+<div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
+    <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
+        <span style=\"font-size:1.05em;vertical-align:middle;\">&#129302;</span> AI Search & Knowledge System
+    </div>
+    <div style='margin:0 0 0 0;font-size:0.91em;line-height:1.35;text-align:center;'>
+        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+            <span style=\"font-size:1em;\">&#128269;</span> <span>Semantic Search</span>
+        </div>
+        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+            <span style=\"font-size:1em;\">&#128196;</span> <span>Document Q&amp;A</span>
+        </div>
+        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+            <span style=\"font-size:1em;\">&#128737;</span> <span>Private, Local LLM</span>
+        </div>
+        <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
+            <span style=\"font-size:1em;\">&#9889;</span> <span>Fast, Modern UI</span>
+        </div>
+        <div style='display:flex;align-items:center;justify-content:center;gap:6px;'>
+            <span style=\"font-size:1em;\">&#128202;</span> <span>Feedback Logging</span>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Restore About This Project expander at the top
+with st.sidebar.expander("ℹ️ About This Project", expanded=False):
+    st.markdown("""
+    <div style='font-size:1.15em;font-weight:700;margin-bottom:6px;'>Portfolio Project</div>
+    <div style='margin-bottom:10px;'>
+        This is a demonstration of a <b>Chatbot</b> for private, local document Q&amp;A and semantic search, featuring:
+    </div>
+    <ul style='margin-top: 6px; margin-bottom: 0; padding-left: 18px;'>
+        <li>Conversational Q&amp;A over your internal documents</li>
+        <li>Natural language chat interface with context retention</li>
+        <li>Historical learning and context-aware chat memory</li>
+        <li>Private, local LLM (Ollama or HuggingFace) with no cloud dependency</li>
+        <li>Semantic search over internal documents using FAISS and embeddings</li>
+        <li>Modern, real-time UI with Streamlit</li>
+        <li>Production-grade, modular Python codebase</li>
+    </ul>
+    """, unsafe_allow_html=True)
+
+with st.sidebar.expander("📁 Project Documentation", expanded=False):
+        st.markdown("""
+        <div style='font-size:1.12em;font-weight:700;margin-bottom:6px;'>Project Documentation</div>
+        <div style='margin-bottom:8px;'>
+            <span style='font-size:1em;'>
+                <b>GitHub Repository</b> 🔗 <a href='https://github.com/obizues/Local-AI-Chatbot-POC' target='_blank'>github.com/obizues/Local-AI-Chatbot-POC</a>
+            </span>
+        </div>
+        <div style='margin-bottom:8px;'><b>Documentation</b></div>
+        <ul style='margin-bottom:0; padding-left: 18px;'>
+            <li>📖 <a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md' target='_blank'>README.md</a> - Project overview, quick start, features</li>
+            <li>🏗️ <a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md' target='_blank'>ARCHITECTURE.md</a> - Deep technical documentation</li>
+            <li>📊 System Diagrams - 5 Mermaid diagrams</li>
+        </ul>
+        <div style='margin-top:10px; margin-bottom:4px;'><b>Key Sections:</b></div>
+        <ul style='margin-bottom:0; padding-left: 18px;'>
+            <li>Multi-agent system design</li>
+            <li>LLM integration strategy</li>
+            <li>Production deployment guide</li>
+            <li>Architectural decision records</li>
+        </ul>
         """, unsafe_allow_html=True)
-    with st.sidebar.expander("📁 Project Documentation", expanded=False):
+with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
         st.markdown("""
         <span style='font-size:1em;'>
-        <ul style='margin-bottom:0;'>
-          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md' target='_blank'>README</a></li>
-          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/CHANGELOG.md' target='_blank'>Changelog</a></li>
-          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md' target='_blank'>Architecture</a></li>
-          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md#system-components' target='_blank'>System Design Notes</a></li>
+        <ul style='margin-bottom:0; padding-left: 18px;'>
+            <li>Python 3.10+</li>
+            <li>Streamlit (UI)</li>
+            <li>FAISS (vector search)</li>
+            <li>sentence-transformers (embeddings)</li>
+            <li>HuggingFace Transformers (LLM pipeline)</li>
+            <li>Ollama (local LLM, optional)</li>
+            <li>Flask (API integration)</li>
+            <li>pandas (data handling)</li>
+            <li>NumPy (vector math)</li>
+            <li>PyMuPDF (PDF ingestion)</li>
+            <li>python-docx (DOCX ingestion)</li>
+            <li>langchain, llama-index (optional, advanced retrieval)</li>
         </ul>
         </span>
         """, unsafe_allow_html=True)
-    with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
+with st.sidebar.expander("📝 System Design Notes", expanded=False):
         st.markdown("""
-        <span style='font-size:1em;'>
-        <ul style='margin-bottom:0;'>
-          <li>Python 3.10+</li>
-          <li>Streamlit</li>
-          <li>FAISS, pandas, sentence-transformers</li>
-          <li>Ollama (optional)</li>
-          <li>HuggingFace Transformers</li>
-          <li>Flask (API integration)</li>
+        <div style='font-size:1.12em;font-weight:700;margin-bottom:8px;'>📋 System Design Notes</div>
+        <ul style='margin-bottom:0; padding-left: 18px;'>
+            <li><b>Retrieval-Augmented Chat:</b> User questions are embedded and matched to relevant document chunks using FAISS, providing context for LLM answers.</li>
+            <li><b>Unified Chat Interface:</b> Streamlit UI displays chat history, model selection, and sidebar documentation in a single, modern layout.</li>
+            <li><b>Session State Management:</b> All chat history, selected model, and user context are stored in Streamlit session state for seamless multi-turn conversations.</li>
+            <li><b>Flexible LLM Backend:</b> Supports both local (Ollama) and HuggingFace LLMs, switchable via UI, with fallback and error handling for robustness.</li>
+            <li><b>Document Ingestion Pipeline:</b> Batch scripts process PDFs, DOCX, and text files, chunking and embedding them for fast semantic search.</li>
+            <li><b>Feedback Logging:</b> User queries, responses, and feedback are logged to CSV for evaluation and improvement.</li>
+            <li><b>Customizable Sidebar:</b> Sidebar provides About, Documentation, Tech Stack, and System Design Notes, all styled for clarity and mobile compatibility.</li>
+            <li><b>Real-Time UI Updates:</b> Chat and sidebar update instantly on user input, with scroll-to-bottom and feedback features for usability.</li>
+            <li><b>Security & Privacy:</b> All processing is local; no data leaves the user's environment. API keys and secrets are managed via environment variables and never committed to source control.</li>
+            <li><b>Extensible Architecture:</b> Modular codebase allows easy addition of new models, data sources, or UI features.</li>
+            <li><b>Observability:</b> Debug logs and error messages are written to local files for troubleshooting and transparency.</li>
+            <li><b>Resilience:</b> Graceful error handling ensures the app remains usable even if some components fail or are unavailable.</li>
+            <li><b>Infrastructure:</b> Designed for local use, but can be containerized or deployed on private servers as needed.</li>
         </ul>
-        </span>
-        """, unsafe_allow_html=True)
-    with st.sidebar.expander("📝 System Design Notes", expanded=False):
-        st.markdown("""
-        <span style='font-size:1em;'>
-        <ul style='margin-bottom:0;'>
-          <li>Modern, compact chat UI with colored header and sidebar sections</li>
-          <li>Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version</li>
-          <li>Unified chat logic in <code>ui/app.py</code> (no more <code>basic_chat.py</code>)</li>
-          <li>Robust FAISS index and metadata loading</li>
-          <li>Bugfixes for NameError and UI rendering</li>
-          <li>All chat UI and logic now in <code>ui/app.py</code></li>
-          <li>See <a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md' target='_blank'>ARCHITECTURE.md</a></li>
-        </ul>
-        </span>
         """, unsafe_allow_html=True)
