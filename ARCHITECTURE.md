@@ -23,12 +23,13 @@ This document describes the architecture, components, and deployment strategies 
 - **Self-hosted/VM:** Full feature set with Ollama support
 - **Dev Container:** VS Code + Docker for reproducible local development
 
-## Recent Updates (v0.6.0)
-- Unified chat UI in `ui/app.py` (basic_chat.py deprecated)
-- Always display LLM/model name after each response
-- Improved retrieval accuracy and logging
-- Feedback and improvements tracker in sidebar
-- Removal of unused `my_chat_component` folder
+## Recent Updates (v0.8.0)
+- Modern, compact chat UI with colored header and sidebar sections
+- Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version
+- Unified chat logic in `ui/app.py` (no more `basic_chat.py`)
+- Robust FAISS index and metadata loading
+- Bugfixes for NameError and UI rendering
+- All chat UI and logic now in `ui/app.py`
 
 ## Diagrams
 ### Chat UI and Data Flow (Mermaid)

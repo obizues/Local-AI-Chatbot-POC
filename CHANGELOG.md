@@ -1,3 +1,12 @@
+# [0.8.0] - 2026-02-21
+### Added
+- Modern, compact chat UI with colored header and sidebar sections
+- Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version
+- Unified chat logic in `ui/app.py` (no more `basic_chat.py`)
+- Robust FAISS index and metadata loading
+- Bugfixes for NameError and UI rendering
+- All chat UI and logic now in `ui/app.py`
+
 
 # Changelog
 

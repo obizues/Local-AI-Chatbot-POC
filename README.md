@@ -1,5 +1,8 @@
 ## 🖼️ System Diagram
 
+> **Version:** v0.8.0 — February 21, 2026
+
+
 ```mermaid
 graph TD
    UserInput[User Input] --> ChatWindow[Chat Window]
@@ -39,7 +42,16 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
    (The new modern chat UI is integrated directly in ui/app.py. No need to use basic_chat.py. The `my_chat_component` folder has been removed as of v0.6.0.)
 
 
-## 🛠️ Features
+## 🛠️ Features (v0.8.0)
+* Modern, compact Streamlit chat UI with colored header, sidebar sections, and centered user info
+* Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version
+* Unified chat logic in `ui/app.py` (no more `basic_chat.py`)
+* Always display LLM/model name after each response
+* Robust FAISS index and metadata loading
+* Semantic search and retrieval with SentenceTransformers
+* Feedback logging, semantic similarity, response time metrics
+* CSV logging of all interactions
+* Devcontainer and GitHub Actions for reproducible development
 - Modern Streamlit chat UI with right-aligned chat bubbles and bottom-aligned messages
 - LLM/model name always displayed after each response
 - LLM support (Ollama and HuggingFace)
@@ -50,7 +62,7 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
 - Improvements tracker in sidebar
 - Devcontainer and GitHub Actions for reproducible development and uptime
 
-## 📦 Project Structure
+## 📦 Project Structure (as of v0.8.0)
 - `ui/app.py` — Main Streamlit app (contains the new chat UI)
 - `llm_backend/` — LLM and RAG pipeline code
 - `ingestion/` — Data ingestion and chunking scripts
@@ -63,7 +75,7 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
 - `ARCHITECTURE.md` — System architecture and design
 - `CHANGELOG.md` — Release history
 
-*Note: The `my_chat_component` folder has been removed as of v0.6.0.*
+*Note: The `my_chat_component` folder has been removed as of v0.6.0. All chat UI is now in `ui/app.py` as of v0.8.0.*
 
 ## 🔐 Security Notes
 - No API keys are committed
@@ -73,6 +85,7 @@ A hands-on AI project demonstrating semantic search, LLM chat, and feedback logg
 ## 📚 Further Reading
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [CHANGELOG.md](CHANGELOG.md)
+- [System Design Notes](ARCHITECTURE.md#system-components)
 
 ## 📝 License
 MIT License — see [LICENSE]

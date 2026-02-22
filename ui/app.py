@@ -79,19 +79,18 @@ header_html = f"""
     <div style="font-size:1.15em;font-weight:600;color:#1976d2;text-align:center;">Chris Obermeier | SVP of Engineering</div>
     <div style="margin-bottom:6px;text-align:center;">Enterprise & PE-Backed Platform Modernization | AI & Data-Driven Transformation</div>
     <div class="user-info-links" style="text-align:center;margin-top:8px;">
-        <span>
-            <a href="https://www.linkedin.com/in/chris-obermeier" target="_blank" style="color:#1976d2;text-decoration:underline;">LinkedIn</a> |
-            <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">GitHub</a> |
-            <a href="mailto:chris.obermeier@gmail.com" style="color:#1976d2;text-decoration:underline;">Email</a>
-        </span>
-        <br>
-        <span>
-            ⭐ <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">Star on GitHub</a> |
-            📖 <a href="https://github.com/obizues/Local-AI-Chatbot-POC#readme" target="_blank" style="color:#1976d2;text-decoration:underline;">Read Documentation</a> |
-            🎓 <a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md" target="_blank" style="color:#1976d2;text-decoration:underline;">View Architecture</a>
-        </span>
-        <br><b>App Version:</b> {APP_VERSION}
-    </div>
+            <span>
+                <a href="https://www.linkedin.com/in/chris-obermeier" target="_blank" style="color:#1976d2;text-decoration:underline;">LinkedIn</a> |
+                <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">GitHub</a> |
+                <a href="mailto:chris.obermeier@gmail.com" style="color:#1976d2;text-decoration:underline;">Email</a>
+            </span>
+            <br>
+            <span>
+                ⭐ <a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank" style="color:#1976d2;text-decoration:underline;">Star on GitHub</a> |
+                📖 <a href="https://github.com/obizues/Local-AI-Chatbot-POC#readme" target="_blank" style="color:#1976d2;text-decoration:underline;">Read Documentation</a> |
+                🎓 <a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md" target="_blank" style="color:#1976d2;text-decoration:underline;">View Architecture</a>
+            </span>
+        </div>
 </div>
 """
 st.markdown(header_html, unsafe_allow_html=True)
@@ -544,27 +543,57 @@ if not ECHO_MODE:
     # Sidebar info cards
     st.sidebar.markdown(f"""
     <div style='background:#eaf6ff;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:1.1em;'>
-    <span style='font-size:1.2em;'>🗂️ <b>App version:</b></span><br>
-    <span style='font-size:1.05em;'>{APP_VERSION} - Debate Save Hotfix</span>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.sidebar.markdown("""
-    <div style='background:#f5faff;padding:10px 12px;border-radius:8px;margin-bottom:8px;'>
-    <span style='font-size:1.15em;font-weight:600;'>⚪ <b>3-Agent Debate System</b></span><br>
-    <span style='font-size:1em;'>
-    🗂️ Planner | 📉 Market Analyst | 🛡️ Risk Officer<br>
-    🧠 Claude 3.5 Powered<br>⚡ Live Execution Tracking
-    </span>
+        <b>Local AI Chatbot POC</b><br>
+        Modern, production-ready chat UI with semantic search, LLM integration, and feedback logging.<br>
+        <span style='font-size:0.95em;'>Inspired by <a href='https://github.com/obizues/agentic-mortgage-research' target='_blank'>agentic-mortgage-research</a>.</span><br>
+        <b>App Version:</b> {APP_VERSION}
     </div>
     """, unsafe_allow_html=True)
 
     # Collapsible sidebar sections (default collapsed)
     with st.sidebar.expander("ℹ️ About This Project", expanded=False):
-        st.markdown("""<span style='font-size:1em;'>Project overview and goals.</span>""", unsafe_allow_html=True)
+        st.markdown(f"""
+        <span style='font-size:1em;'>
+        <b>Local AI Chatbot POC</b> — Modern, production-ready chat UI with semantic search, LLM integration, and feedback logging.<br>
+        Inspired by <a href='https://github.com/obizues/agentic-mortgage-research' target='_blank'>agentic-mortgage-research</a>.<br>
+        <b>Version:</b> {APP_VERSION} — February 21, 2026
+        </span>
+        """, unsafe_allow_html=True)
     with st.sidebar.expander("📁 Project Documentation", expanded=False):
-        st.markdown("""<span style='font-size:1em;'>Links to docs and guides.</span>""", unsafe_allow_html=True)
+        st.markdown("""
+        <span style='font-size:1em;'>
+        <ul style='margin-bottom:0;'>
+          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md' target='_blank'>README</a></li>
+          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/CHANGELOG.md' target='_blank'>Changelog</a></li>
+          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md' target='_blank'>Architecture</a></li>
+          <li><a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md#system-components' target='_blank'>System Design Notes</a></li>
+        </ul>
+        </span>
+        """, unsafe_allow_html=True)
     with st.sidebar.expander("🛠️ Tech Stack", expanded=False):
-        st.markdown("""<span style='font-size:1em;'>Python, Streamlit, FAISS, etc.</span>""", unsafe_allow_html=True)
+        st.markdown("""
+        <span style='font-size:1em;'>
+        <ul style='margin-bottom:0;'>
+          <li>Python 3.10+</li>
+          <li>Streamlit</li>
+          <li>FAISS, pandas, sentence-transformers</li>
+          <li>Ollama (optional)</li>
+          <li>HuggingFace Transformers</li>
+          <li>Flask (API integration)</li>
+        </ul>
+        </span>
+        """, unsafe_allow_html=True)
     with st.sidebar.expander("📝 System Design Notes", expanded=False):
-        st.markdown("""<span style='font-size:1em;'>Architecture and design details.</span>""", unsafe_allow_html=True)
+        st.markdown("""
+        <span style='font-size:1em;'>
+        <ul style='margin-bottom:0;'>
+          <li>Modern, compact chat UI with colored header and sidebar sections</li>
+          <li>Sidebar: About, Documentation, Tech Stack, System Design Notes, App Version</li>
+          <li>Unified chat logic in <code>ui/app.py</code> (no more <code>basic_chat.py</code>)</li>
+          <li>Robust FAISS index and metadata loading</li>
+          <li>Bugfixes for NameError and UI rendering</li>
+          <li>All chat UI and logic now in <code>ui/app.py</code></li>
+          <li>See <a href='https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md' target='_blank'>ARCHITECTURE.md</a></li>
+        </ul>
+        </span>
+        """, unsafe_allow_html=True)
