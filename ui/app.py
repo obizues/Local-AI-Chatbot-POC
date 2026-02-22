@@ -116,7 +116,7 @@ banner_html = '''
 const stApp = window.parent.document.querySelector('section.main');
 if (stApp) { stApp.style.paddingTop = '0px'; }
 </script>
-<div class="banner-spacer"></div>
+<!-- Removed banner-spacer to eliminate gap below banner -->
 '''
 st.markdown(banner_html, unsafe_allow_html=True)
 
@@ -126,7 +126,7 @@ user_info_html = """
     background: #e9ecef;
     border-radius: 10px;
     padding: 14px 20px 10px 20px;
-    margin-top: 0;
+    margin-top: 1.7em;
     margin-bottom: 14px;
     box-shadow: 0 1px 6px rgba(33,150,243,0.06);
     text-align: center;
