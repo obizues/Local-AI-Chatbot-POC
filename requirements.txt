@@ -9,15 +9,5 @@ streamlit
 flask
 flask-login
 # All chat UI dependencies are now in ui/app.py
-pymupdf
-python-docx
-pandas
-sentence-transformers
-faiss-cpu
-langchain
-llama-index
-streamlit
-flask
-flask-login
+# Requirements for v0.11.0
 # Removed gradi o (typo or unused)
-# All chat UI dependencies are now in ui/app.py

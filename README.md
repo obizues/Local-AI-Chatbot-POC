@@ -2,6 +2,7 @@
 ## 🖼️ System Diagram
 
 > **Version:** v0.9.0 — February 22, 2026
+- **Version:** v0.10.0 — February 23, 2026
 
 
 ```mermaid
@@ -22,6 +23,8 @@ A hands-on AI project for private, local document Q&A and semantic search, featu
 ### Prerequisites
 - Python 3.10+
 - (Optional) Ollama installed for local LLM support
+
+> **Version:** v0.11.0 — February 23, 2026
 
 ### Setup
 1. Clone the repo:
@@ -45,6 +48,9 @@ A hands-on AI project for private, local document Q&A and semantic search, featu
 
 
 ## 🚀 Features (v0.9.0)
+- Strict RBAC for salary and sensitive data (HR: all, CTO: Technology only, David Kim: self only)
+- All salary responses are formatted as HTML tables
+- CTO/HR queries for specific roles (e.g., CTO salary) return only that individual's salary
 - Modern, unified Streamlit chat UI with colored header, sidebar, and persistent model display
 - Sidebar: About, Project Documentation, Tech Stack, System Design Notes, App Version
 - Conversational Q&A over your internal documents (PDF, DOCX, TXT)
@@ -54,15 +60,16 @@ A hands-on AI project for private, local document Q&A and semantic search, featu
 - CSV logging of all interactions for evaluation
 - Modular, extensible Python codebase
 - Devcontainer and GitHub Actions for reproducible development
-- CSV logging of all interactions (including LLM name and response time)
 - Improvements tracker in sidebar
-- Devcontainer and GitHub Actions for reproducible development and uptime
 
 ## 📦 Project Structure (as of v0.8.0)
 - `ui/app.py` — Main Streamlit app (contains the new chat UI)
 - `llm_backend/` — LLM and RAG pipeline code
 - `ingestion/` — Data ingestion and chunking scripts
-- `vector_db/` — FAISS index and metadata
+## 🚀 Features (v0.11.0)
+- Strict RBAC for salary and sensitive data (HR: all, CTO: Technology only, David Kim: self only)
+- All salary responses are formatted as HTML tables
+- CTO/HR queries for specific roles (e.g., CTO salary) return only that individual's salary
 - `mock_data/` — Example documents
 - `.devcontainer/` — VS Code devcontainer config
 - `.github/workflows/` — GitHub Actions workflows

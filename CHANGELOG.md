@@ -1,4 +1,20 @@
 
+
+# [0.11.0] - 2026-02-23
+### Changed
+- Strict RBAC for salary and sensitive data (HR: all, CTO: Technology only, David Kim: self only)
+- All salary responses are formatted as HTML tables
+- CTO/HR queries for specific roles (e.g., CTO salary) return only that individual's salary
+
+# [0.10.0] - 2026-02-23
+### Added
+- Strict RBAC for salary and sensitive data (HR: all, CTO: Technology only, David Kim: self only)
+- All salary responses are formatted as HTML tables
+- CTO/HR queries for specific roles (e.g., CTO salary) return only that individual's salary
+- Role-preserved chat history (each message stores the role at time of sending)
+- Chat bubbles always display the role at the time of message
+- UI/UX improvements and bug fixes
+
 # [0.9.0] - 2026-02-22
 ### Added
 - Unified, modern chat UI with colored header, sidebar, and persistent model display
