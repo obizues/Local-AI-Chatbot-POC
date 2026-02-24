@@ -77,29 +77,7 @@ if (stApp) { stApp.style.paddingTop = '0px'; }
 st.markdown(banner_html, unsafe_allow_html=True)
 
 # --- Sidebar Documentation Update ---
-sidebar_md = '''
-## About
-This is a private, local AI Chatbot for secure document Q&A and semantic search.
-
-## Project Documentation
-- [README](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md)
-- [ARCHITECTURE](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md)
-- [CHANGELOG](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/CHANGELOG.md)
-
-## Tech Stack
-- Python, Streamlit, pandas, SentenceTransformers, FAISS, Ollama, HuggingFace Transformers
-
-## System Design Notes
-- Strict RBAC for salary and sensitive data (HR: all, CTO: Technology only, David Kim: self only)
-- All salary responses as HTML tables
-- CTO/HR queries for specific roles (e.g., CTO salary) return only that individual's salary
-- Role-preserved chat history
-- Unified, modern chat UI
-
-## App Version
-v0.11.0
-'''
-st.sidebar.markdown(sidebar_md)
+## (Sidebar markdown removed as requested)
 
 
 
