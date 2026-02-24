@@ -77,6 +77,28 @@ if (stApp) { stApp.style.paddingTop = '0px'; }
 st.markdown(banner_html, unsafe_allow_html=True)
 
 # --- Sidebar Documentation Update ---
+sidebar_about_md = '''
+## About This Project
+Portfolio Project
+- Secure, local AI chatbot for enterprise document Q&A
+- Strict role-based access control (RBAC) for sensitive data
+- Real-time semantic search and retrieval
+- Unified, modern chat UI with persistent role/model display
+- Modular, extensible Python/Streamlit codebase
+- Production-grade deployment and reproducible environments
+- Robust feedback logging and evaluation
+
+**Target Audience:**
+Technology executives, engineering leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
+
+**What This Demonstrates:**
+- Deep LLM integration (Ollama, HuggingFace Transformers)
+- Multi-role RBAC enforcement and salary logic
+- Unified, modern chat UI with persistent role/model display
+- Clean architecture, modular code, and documentation
+- Technical leadership and system design for enterprise AI
+'''
+st.sidebar.markdown(sidebar_about_md)
 ## (Sidebar markdown removed as requested)
 
 

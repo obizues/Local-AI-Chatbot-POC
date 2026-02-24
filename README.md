@@ -16,7 +16,27 @@ graph TD
 
 # 🤖 Local AI Chatbot POC
 
+
 A hands-on AI project for private, local document Q&A and semantic search, featuring a modern, production-ready Python/Streamlit stack. Includes a unified chat UI, sidebar with documentation, tech stack, and system design notes, and robust feedback logging. Inspired by [agentic-mortgage-research](https://github.com/obizues/agentic-mortgage-research).
+
+## Portfolio Project
+- Secure, local AI chatbot for enterprise document Q&A
+- Strict role-based access control (RBAC) for sensitive data
+- Real-time semantic search and retrieval
+- Unified, modern chat UI with persistent role/model display
+- Modular, extensible Python/Streamlit codebase
+- Production-grade deployment and reproducible environments
+- Robust feedback logging and evaluation
+
+**Target Audience:**
+Technology executives, engineering leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
+
+**What This Demonstrates:**
+- Deep LLM integration (Ollama, HuggingFace Transformers)
+- Multi-role RBAC enforcement and salary logic
+- Unified, modern chat UI with persistent role/model display
+- Clean architecture, modular code, and documentation
+- Technical leadership and system design for enterprise AI
 
 ## 🚀 Quick Start
 
