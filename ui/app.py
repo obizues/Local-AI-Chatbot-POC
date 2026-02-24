@@ -77,7 +77,11 @@ if (stApp) { stApp.style.paddingTop = '0px'; }
 st.markdown(banner_html, unsafe_allow_html=True)
 
 # --- Sidebar Documentation Update ---
-sidebar_md = '''
+## (Sidebar markdown removed as requested)
+
+# Add About This Project and Target Audience at the bottom of the sidebar
+about_md = '''
+---
 ## About This Project
 Portfolio Project
 This is a demonstration of a secure, local AI chatbot architecture designed for:
@@ -91,7 +95,7 @@ This is a demonstration of a secure, local AI chatbot architecture designed for:
 **Target Audience:**
 Technology executives, engineering leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
 '''
-st.sidebar.markdown(sidebar_md)
+st.sidebar.markdown(about_md)
 ## (Sidebar markdown removed as requested)
 
 
