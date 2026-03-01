@@ -33,7 +33,26 @@
 - Modular, extensible Python codebase
 
 
+
 # Changelog
+
+## [v1.0.2] - Release
+
+### Added
+- Refactored model and data loading to backend module for performance and maintainability
+- Fixed model selection logic and improved UI responsiveness
+### Added
+- Fully working chatbot UI in Streamlit (ui/app.py)
+- HR salary table extraction and display logic
+- Sidebar/documentation region cleaned and robust
+
+### Fixed
+- All syntax errors in sidebar/documentation (unterminated strings, stray HTML)
+- HR "show all salaries" logic
+
+### Known Issues
+- App is slow due to logic-heavy UI
+- Some business logic still in UI layer
 
 ## [0.6.0] - 2026-02-19
 ### Added

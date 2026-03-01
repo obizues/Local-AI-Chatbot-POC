@@ -1,4 +1,4 @@
-#!/workspaces/Local-AI-Chatbot-POC/.venv/bin/python
+#!/workspaces/Local-AI-Chatbot-POC/.venv/bin/python3
 import sys
 from pymupdf.__main__ import main
 if __name__ == '__main__':

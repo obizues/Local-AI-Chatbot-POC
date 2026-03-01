@@ -8,6 +8,8 @@ llama-index
 streamlit
 flask
 flask-login
+
 # All chat UI dependencies are now in ui/app.py
+# Requirements for v1.0.2 release: dependencies confirmed
 # Requirements for v0.11.0
 # Removed gradi o (typo or unused)

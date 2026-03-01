@@ -44,7 +44,7 @@ Technology executives, engineering leaders, HR professionals, AI/ML practitioner
 - Python 3.10+
 - (Optional) Ollama installed for local LLM support
 
-> **Version:** v1.0.0 — February 26, 2026
+> **Version:** v1.0.2 — March 1, 2026
 
 ### Setup
 1. Clone the repo:
