@@ -2,14 +2,14 @@
 
 
 
-# Local AI Chatbot POC - Architecture (v1.0.1)
+# Local AI Chatbot POC - Architecture (v1.0.2)
 
 ## Overview
 This document describes the architecture, components, and deployment strategies for the Local AI Chatbot POC. The design is inspired by the structure and best practices of the agentic-mortgage-research project.
 
 
 
-**Version:** v1.0.1 (April 2024)
+**Version:** v1.0.2 (March 2026)
 ## Key Components
 - **ui/app.py**: Main Streamlit app, chat UI, sidebar/documentation, RBAC logic, onboarding, and salary extraction.
 - **llm_backend/**: Business logic, LLM service, RAG pipeline, RBAC service, and data utilities.

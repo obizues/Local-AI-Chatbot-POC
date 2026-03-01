@@ -36,7 +36,11 @@
 
 # Changelog
 
-## [v1.0.1] - Release
+## [v1.0.2] - Release
+
+### Added
+- Refactored model and data loading to backend module for performance and maintainability
+- Fixed model selection logic and improved UI responsiveness
 ### Added
 - Fully working chatbot UI in Streamlit (ui/app.py)
 - HR salary table extraction and display logic
