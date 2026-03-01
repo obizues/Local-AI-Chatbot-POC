@@ -1690,3 +1690,105 @@ user_input: show all salaries
 start_total: 1772310679.5119133
 end_total: 1772310679.5992568
 total_response_time: 0.08734345436096191
+
+--- 2026-02-28 20:37:45.676206 ---
+user_input: show cto salary
+start_total: 1772311065.62313
+end_total: 1772311065.6749058
+total_response_time: 0.05177569389343262
+
+--- 2026-02-28 23:16:52.087395 ---
+user_input: show all salaries
+start_total: 1772320611.990141
+end_total: 1772320612.0843256
+total_response_time: 0.09418463706970215
+
+--- 2026-02-28 23:18:11.922068 ---
+user_input: show cto salary
+start_total: 1772320691.845395
+end_total: 1772320691.9200783
+total_response_time: 0.07468318939208984
+
+--- 2026-02-28 23:26:41.036963 ---
+user_input: show technology salaries
+start_total: 1772321200.926147
+end_total: 1772321201.034447
+total_response_time: 0.10829997062683105
+
+--- 2026-02-28 23:28:49.264030 ---
+user_input: show hr salaries
+start_total: 1772321329.179392
+end_total: 1772321329.2609782
+total_response_time: 0.08158612251281738
+
+--- 2026-02-28 23:29:46.655292 ---
+user_input: show my salary
+start_total: 1772321386.5655437
+end_total: 1772321386.647817
+total_response_time: 0.08227324485778809
+
+--- 2026-02-28 23:30:26.249553 ---
+user_input: show alice's salary
+start_total: 1772321426.169742
+end_total: 1772321426.2449574
+total_response_time: 0.07521533966064453
+
+--- 2026-03-01 01:41:59.850175 ---
+user_input: show all salaries
+start_total: 1772329319.6921377
+end_total: 1772329319.8292327
+total_response_time: 0.13709497451782227
+
+--- 2026-03-01 01:44:09.929326 ---
+user_input: all salaries
+start_total: 1772329449.8711145
+end_total: 1772329449.9274518
+total_response_time: 0.05633735656738281
+
+--- 2026-03-01 01:47:00.197900 ---
+user_input: show hr salaries
+start_total: 1772329620.12455
+end_total: 1772329620.1939662
+total_response_time: 0.06941604614257812
+
+--- 2026-03-01 01:48:44.661432 ---
+user_input: show hr salaries
+start_total: 1772329724.59431
+end_total: 1772329724.6579611
+total_response_time: 0.06365108489990234
+
+--- 2026-03-01 01:50:51.631934 ---
+user_input: show technology salaries
+start_total: 1772329851.5743446
+end_total: 1772329851.6285918
+total_response_time: 0.054247140884399414
+
+--- 2026-03-01 01:58:25.458874 ---
+user_input: show all salaries
+start_total: 1772330305.4077058
+end_total: 1772330305.4549577
+total_response_time: 0.04725193977355957
+
+--- 2026-03-01 01:58:31.392010 ---
+user_input: show hr salaries
+start_total: 1772330311.3404706
+end_total: 1772330311.3893
+total_response_time: 0.04882955551147461
+
+--- 2026-03-01 01:58:59.489319 ---
+user_input: show technology salaries
+start_total: 1772330339.4415512
+end_total: 1772330339.4873247
+total_response_time: 0.04577350616455078
+
+--- 2026-03-01 01:59:02.731545 ---
+user_input: show cto salaries
+start_total: 1772330342.680008
+end_total: 1772330342.729061
+total_response_time: 0.04905295372009277
+
+--- 2026-03-01 01:59:05.669221 ---
+user_input: show my salary
+start_total: 1772330345.619059
+end_total: 1772330345.666361
+total_response_time: 0.0473020076751709

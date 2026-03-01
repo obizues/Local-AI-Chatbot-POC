@@ -1,4 +1,4 @@
-#!/workspaces/Local-AI-Chatbot-POC/.venv/bin/python
+#!/workspaces/Local-AI-Chatbot-POC/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

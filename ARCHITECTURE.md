@@ -1,13 +1,33 @@
 
 
 
-# Architecture: Local AI Chatbot POC
+
+# Local AI Chatbot POC - Architecture (v1.0.1)
 
 ## Overview
 This document describes the architecture, components, and deployment strategies for the Local AI Chatbot POC. The design is inspired by the structure and best practices of the agentic-mortgage-research project.
 
 
-**Version:** v1.0.0 (February 26, 2026)
+
+**Version:** v1.0.1 (April 2024)
+## Key Components
+- **ui/app.py**: Main Streamlit app, chat UI, sidebar/documentation, RBAC logic, onboarding, and salary extraction.
+- **llm_backend/**: Business logic, LLM service, RAG pipeline, RBAC service, and data utilities.
+- **ingestion/**: Scripts for document ingestion, chunking, and embedding.
+- **vector_db/**: Stores metadata and vector index for document retrieval.
+- **mock_data/**: Sample HR, Engineering, and Training documents.
+- **tests/**: Unit and integration tests for chatbot logic and RBAC.
+
+## Data Flow
+1. User interacts with Streamlit UI (ui/app.py).
+2. Query is processed, RBAC checked, and routed to LLM backend.
+3. Relevant documents are retrieved from vector_db and mock_data.
+4. LLM backend generates answer, possibly using RAG pipeline.
+5. Results (e.g., salary tables, onboarding steps) are rendered in the UI.
+
+## Known Issues
+- Some business logic remains in the UI layer (to be refactored).
+- App performance is slow for large queries.
 
 **Major Features:**
 - Enterprise-grade, typo-tolerant RBAC for all salary and sensitive queries
