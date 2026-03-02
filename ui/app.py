@@ -561,6 +561,10 @@ with st.expander("Query Logs (Audit)", expanded=False):
         if not logs_df.empty:
             # Convert all columns to string to avoid Arrow LargeUtf8 errors
             logs_df = logs_df.astype(str)
+            import re
+            def strip_html(text):
+                return re.sub('<[^<]+?>', '', text) if isinstance(text, str) else text
+            logs_df['response'] = logs_df['response'].apply(strip_html)
             st.dataframe(logs_df, height=250)
         else:
             st.info("No logs to display.")
