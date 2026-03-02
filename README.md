@@ -2,7 +2,7 @@
 ## 🖼️ System Diagram
 
 > **Version:** v1.0.4 — March 2, 2026
-
+> **Version:** v2.0.0 — March 2, 2026
 ```mermaid
 flowchart TD
    UserInput[User Input (UI)] -->|Typed Query| ChatWindow[Chat Window (Streamlit)]
