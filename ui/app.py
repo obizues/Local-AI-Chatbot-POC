@@ -505,33 +505,31 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 st.markdown('<div class="input-bar">', unsafe_allow_html=True)
-with st.form(key='chat_input_form', clear_on_submit=True):
-    # Only one text_input with key 'user_input' in the form
-    user_input = st.text_input("Message", "", key="user_input")
-    submitted = st.form_submit_button("Send")
-    if submitted and user_input.strip():
-        user_role = st.session_state.get('user_role', 'You')
-        metadata = st.session_state.get('metadata', pd.DataFrame())
-        bot_response = ''
-        provenance = None
-        model_used = st.session_state.get('selected_model', GEN_MODEL_NAME)
-        response_time = None
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
-        from llm_backend.query_router import route_query
-        bot_response, provenance = route_query(user_input, user_role, metadata)
-        is_denial = isinstance(bot_response, str) and ('Unauthorized access attempt' in bot_response or 'denied' in bot_response.lower())
-        log_entry = {
-            'timestamp': timestamp,
-            'user': user_role,
-            'query': user_input,
-            'response': bot_response,
-            'denial': is_denial
-        }
-        if 'query_logs' not in st.session_state:
-            st.session_state['query_logs'] = []
-        st.session_state['query_logs'].append(log_entry)
-        append_query_log(log_entry)
-        st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, model_used, provenance, model_used, user_role))
+user_input = st.text_input("Message", "", key="user_input")
+if user_input.strip():
+    user_role = st.session_state.get('user_role', 'You')
+    metadata = st.session_state.get('metadata', pd.DataFrame())
+    bot_response = ''
+    provenance = None
+    model_used = st.session_state.get('selected_model', GEN_MODEL_NAME)
+    response_time = None
+    timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+    from llm_backend.query_router import route_query
+    bot_response, provenance = route_query(user_input, user_role, metadata)
+    is_denial = isinstance(bot_response, str) and ('Unauthorized access attempt' in bot_response or 'denied' in bot_response.lower())
+    log_entry = {
+        'timestamp': timestamp,
+        'user': user_role,
+        'query': user_input,
+        'response': bot_response,
+        'denial': is_denial
+    }
+    if 'query_logs' not in st.session_state:
+        st.session_state['query_logs'] = []
+    st.session_state['query_logs'].append(log_entry)
+    append_query_log(log_entry)
+    st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, model_used, provenance, model_used, user_role))
+    st.session_state['user_input'] = ""  # Clear input after submission
 
 # --- Collapsible Log Viewer at Bottom ---
 with st.expander("Query Logs (Audit)", expanded=False):
@@ -561,7 +559,7 @@ with st.expander("Query Logs (Audit)", expanded=False):
             # Convert all columns to string to avoid Arrow LargeUtf8 errors
             logs_df = logs_df.astype(str)
             import re
-            def strip_html_and_truncate(text, maxlen=200):
+            def strip_html_and_truncate(text, maxlen=50):
                 txt = re.sub('<[^<]+?>', '', text) if isinstance(text, str) else text
                 return txt[:maxlen] + ('...' if txt and len(txt) > maxlen else '')
             logs_df['response'] = logs_df['response'].apply(strip_html_and_truncate)
