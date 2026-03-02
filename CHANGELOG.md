@@ -8,6 +8,14 @@
 
 
 
+# [v2.0.1] - 2026-03-02
+### Fixed
+- Ensured reliable imports for llm_backend by adding project root to sys.path in ui/app.py
+- launch_streamlit.py now sets working directory and prints sys.path for debugging
+- Added llm_backend/__init__.py for package recognition
+
+
+
 # [0.11.0] - 2026-02-23
 ### Changed
 - Enterprise-grade, typo-tolerant RBAC for all salary and sensitive queries (HR: all, CTO: Technology only, David Kim: self only)
