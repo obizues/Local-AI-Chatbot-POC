@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    UserInput[User Input (UI)] --> ChatWindow[Chat Window (Streamlit)]
+    UserInput["User Input (UI)"] --> ChatWindow[Chat Window (Streamlit)]
     ChatWindow --> RBAC[RBAC & Routing (query_router.py)]
     RBAC --> Audit[Audit Logging]
     RBAC --> LLMBackend[LLM Backend]
