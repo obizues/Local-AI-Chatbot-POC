@@ -1,4 +1,5 @@
 
+
 import os
 # --- Persistent Query Log Utilities ---
 import csv
@@ -22,6 +23,12 @@ def append_query_log(log_entry):
         entry = log_entry.copy()
         entry['denial'] = str(entry['denial'])
         writer.writerow(entry)
+
+# --- Initialize persistent query logs in session state ---
+import streamlit as st
+if 'query_logs' not in st.session_state:
+    logs = load_query_logs()
+    st.session_state['query_logs'] = logs if logs is not None else []
 import pandas as pd
 import faiss
 import re
@@ -548,11 +555,6 @@ with st.expander("Query Logs (Audit)", expanded=False):
         import pandas as pd
         logs_df = pd.DataFrame(logs_to_show)
         if not logs_df.empty:
-            selected_rows = st.multiselect(
-                "Select log entries to view details:",
-                options=list(range(len(logs_df))),
-                format_func=lambda i: f"{logs_df.iloc[i]['timestamp']} | {logs_df.iloc[i]['user']} | {logs_df.iloc[i]['query'][:30]}..."
-            )
             def highlight_denials(row):
                 color = 'background-color: #ffcccc;' if is_denial_true(row) else ''
                 return [color]*len(row)
@@ -560,17 +562,6 @@ with st.expander("Query Logs (Audit)", expanded=False):
                 logs_df.style.apply(highlight_denials, axis=1),
                 height=250
             )
-            if selected_rows:
-                st.markdown("### Selected Log Details")
-                for i in selected_rows:
-                    log = logs_df.iloc[i]
-                    st.json({
-                        'Timestamp': log['timestamp'],
-                        'User': log['user'],
-                        'Query': log['query'],
-                        'Response': log['response'],
-                        'Denial': log['denial']
-                    })
         else:
             st.info("No logs to display.")
     else:

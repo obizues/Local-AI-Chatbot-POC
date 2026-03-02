@@ -4,6 +4,7 @@
 - Collapsible log viewer in UI with denial log filtering and selection
 - Denial logs now detected by both explicit flag and response text
 - Documentation and sidebar updated to reflect new audit features
+- [FIXED] Query logs now persist across app restarts: session state is initialized from CSV at startup, ensuring all logs are loaded and visible in the UI.
 
 
 

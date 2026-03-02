@@ -1,20 +1,19 @@
-
 ## 🖼️ System Diagram
 
 > **Version:** v2.1.0 — March 2, 2026
 ```mermaid
 flowchart TD
-   UserInput[User Input (UI)] --> ChatWindow[Chat Window (Streamlit)]
-   ChatWindow --> RBAC[RBAC & Routing (query_router.py)]
-   RBAC --> Audit[Audit Logging]
-   RBAC --> LLMBackend[LLM Backend]
-   LLMBackend --> Retrieval[Semantic Retrieval (FAISS + SentenceTransformers)]
+   UserInput["User Input (UI)"] --> ChatWindow["Chat Window (Streamlit)"]
+   ChatWindow --> RBAC["RBAC & Routing (query_router.py)"]
+   RBAC --> Audit["Audit Logging"]
+   RBAC --> LLMBackend["LLM Backend"]
+   LLMBackend --> Retrieval["Semantic Retrieval (FAISS + SentenceTransformers)"]
    Retrieval --> LLMBackend
    LLMBackend --> ChatWindow
    subgraph Data
-      VectorDB[vector_db/metadata.csv, .index]
-      MockDocs[mock_data/]
-      Ingest[ingestion/]
+      VectorDB["vector_db/metadata.csv, .index"]
+      MockDocs["mock_data/"]
+      Ingest["ingestion/"]
    end
    Retrieval --> VectorDB
    Retrieval --> MockDocs
@@ -37,7 +36,7 @@ A hands-on AI project for private, local document Q&A and semantic search, featu
 - Modular, extensible Python/Streamlit codebase
 - Production-grade deployment and reproducible environments
 - Robust feedback logging and evaluation
-- **Persistent query logging and audit trail (CSV-based)**
+- **Persistent query logging and audit trail (CSV-based, loaded at startup for full persistence)**
 - **Collapsible log viewer with denial log filtering and selection**
 
 **Target Audience:**
