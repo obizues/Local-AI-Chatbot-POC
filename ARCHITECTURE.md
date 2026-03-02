@@ -24,20 +24,20 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph UI
-        A1(User Input)
-        A2(Chat Window (Streamlit))
-        A3(Role Selection)
+        A1
+        A2
+        A3
     end
     subgraph Backend
-        B1(RBAC & Routing (query_router.py))
-        B2(LLM Backend)
-        B3(RAG Pipeline)
-        B4(Audit Logging)
+        B1
+        B2
+        B3
+        B4
     end
     subgraph Data
-        D1(vector_db/metadata.csv, .index)
-        D2(mock_data/)
-        D3(ingestion/)
+        D1
+        D2
+        D3
     end
     A1 --> A2
     A2 --> A3
@@ -49,6 +49,18 @@ flowchart TD
     B3 --> D1
     B3 --> D2
     D3 --> D1
+
+    %% Node labels
+    A1["User Input"]
+    A2["Chat Window (Streamlit)"]
+    A3["Role Selection"]
+    B1["RBAC & Routing (query_router.py)"]
+    B2["LLM Backend"]
+    B3["RAG Pipeline"]
+    B4["Audit Logging"]
+    D1["vector_db/metadata.csv, .index"]
+    D2["mock_data/"]
+    D3["ingestion/"]
 ```
 
 **Major Features:**
@@ -135,9 +147,3 @@ graph TD
     Retrieval --> DataStore[Document/Data Store]
     LLMBackend --> ChatWindow
 ```
-
-
-## Further Reading
-- See README.md for quick start and usage
-- See CHANGELOG.md for release history
-- See ui/app.py for modern chat UI and RBAC logic
