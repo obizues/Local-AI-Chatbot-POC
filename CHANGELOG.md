@@ -1,3 +1,9 @@
+# [v2.1.0] - 2026-03-02
+### Added
+- Persistent query logging and audit trail (CSV-based)
+- Collapsible log viewer in UI with denial log filtering and selection
+- Denial logs now detected by both explicit flag and response text
+- Documentation and sidebar updated to reflect new audit features
 
 
 

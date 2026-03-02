@@ -1,9 +1,27 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import streamlit as st
-import difflib
+import os
+# --- Persistent Query Log Utilities ---
+import csv
+LOG_CSV_PATH = os.path.join(os.path.dirname(__file__), '..', 'query_logs.csv')
+
+def load_query_logs():
+    if os.path.exists(LOG_CSV_PATH):
+        with open(LOG_CSV_PATH, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            return list(reader)
+    else:
+        st.info("No logs to display.")
+
+def append_query_log(log_entry):
+    file_exists = os.path.exists(LOG_CSV_PATH)
+    with open(LOG_CSV_PATH, 'a', encoding='utf-8', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=['timestamp', 'user', 'query', 'response', 'denial'])
+        if not file_exists:
+            writer.writeheader()
+        # Convert boolean to string for CSV
+        entry = log_entry.copy()
+        entry['denial'] = str(entry['denial'])
+        writer.writerow(entry)
 import pandas as pd
 import faiss
 import re
@@ -475,31 +493,88 @@ st.markdown('''
 </script>
 ''', unsafe_allow_html=True)
 
-# Input bar just below chat window
 st.markdown('<div class="input-bar">', unsafe_allow_html=True)
 with st.form(key='chat_input_form', clear_on_submit=True):
+    # Only one text_input with key 'user_input' in the form
     user_input = st.text_input("Message", "", key="user_input")
     submitted = st.form_submit_button("Send")
     if submitted and user_input.strip():
         user_role = st.session_state.get('user_role', 'You')
         metadata = st.session_state.get('metadata', pd.DataFrame())
         bot_response = ''
-        # Debug: print metadata columns and head
-        print(f"DEBUG: metadata columns: {list(metadata.columns)}", flush=True)
-        print(f"DEBUG: metadata head:\n{metadata.head()}", flush=True)
         provenance = None
         model_used = st.session_state.get('selected_model', GEN_MODEL_NAME)
         response_time = None
-        # --- Query routing logic ---
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         from llm_backend.query_router import route_query
         bot_response, provenance = route_query(user_input, user_role, metadata)
-        # Append to chat history
+        is_denial = isinstance(bot_response, str) and ('Unauthorized access attempt' in bot_response or 'denied' in bot_response.lower())
+        log_entry = {
+            'timestamp': timestamp,
+            'user': user_role,
+            'query': user_input,
+            'response': bot_response,
+            'denial': is_denial
+        }
+        if 'query_logs' not in st.session_state:
+            st.session_state['query_logs'] = []
+        st.session_state['query_logs'].append(log_entry)
+        append_query_log(log_entry)
         st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, model_used, provenance, model_used, user_role))
         st.rerun()
-        # Placeholder for model_used and response_time to avoid NameError
-        llm_display = f' | ' + str(st.session_state.get('selected_model', 'Unknown'))
-        response_time = None
-        time_llm_html = ''
+
+# --- Collapsible Log Viewer at Bottom ---
+with st.expander("Query Logs (Audit)", expanded=False):
+    logs = st.session_state.get('query_logs', [])
+    show_denials_only = st.checkbox("Show only denial logs", value=False, key="show_denials_only")
+    # Handle both bool and string 'denial' values, and fallback to response text if needed
+    def is_denial_true(log):
+        val = log.get('denial')
+        # If denial is a bool or string 'true', treat as denial
+        if val is True or (isinstance(val, str) and val.lower() == 'true'):
+            return True
+        # Fallback: check if response contains denial text
+        resp = str(log.get('response', ''))
+        return (
+            'do not have access' in resp.lower() or
+            'unauthorized access attempt' in resp.lower() or
+            'denied' in resp.lower()
+        )
+    if show_denials_only:
+        logs_to_show = [log for log in logs if is_denial_true(log)]
+    else:
+        logs_to_show = logs
+    if logs_to_show:
+        import pandas as pd
+        logs_df = pd.DataFrame(logs_to_show)
+        if not logs_df.empty:
+            selected_rows = st.multiselect(
+                "Select log entries to view details:",
+                options=list(range(len(logs_df))),
+                format_func=lambda i: f"{logs_df.iloc[i]['timestamp']} | {logs_df.iloc[i]['user']} | {logs_df.iloc[i]['query'][:30]}..."
+            )
+            def highlight_denials(row):
+                color = 'background-color: #ffcccc;' if is_denial_true(row) else ''
+                return [color]*len(row)
+            st.dataframe(
+                logs_df.style.apply(highlight_denials, axis=1),
+                height=250
+            )
+            if selected_rows:
+                st.markdown("### Selected Log Details")
+                for i in selected_rows:
+                    log = logs_df.iloc[i]
+                    st.json({
+                        'Timestamp': log['timestamp'],
+                        'User': log['user'],
+                        'Query': log['query'],
+                        'Response': log['response'],
+                        'Denial': log['denial']
+                    })
+        else:
+            st.info("No logs to display.")
+    else:
+        st.info("No logs to display.")
         # chat_html += f'<div>'
         # Role-specific icon and label for user chat bubble
         role_icons = {
@@ -542,16 +617,9 @@ with st.form(key='chat_input_form', clear_on_submit=True):
                 chat_html += f'<br><span style="font-size:0.85em;color:#1976d2;">Source: {file_to_link(sources)}</span>'
 st.markdown('</div>', unsafe_allow_html=True)
 
-
-
-
-if not ECHO_MODE:
-    # Streamlit UI
-
-    # Track model type for logging (dynamic)
-
-    # Collapsible sidebar sections (default collapsed)
-    st.sidebar.markdown("""
+# Always render sidebar (do not gate on ECHO_MODE)
+# Collapsible sidebar sections (default collapsed)
+st.sidebar.markdown("""
 <div style='background:#eaf6ff;border:1.5px solid #b3e5fc;padding:10px 12px 8px 12px;margin-bottom:12px;text-align:center;border-radius:8px;'>
     <span style='font-size:1.08em;font-weight:600;color:#1976d2;'>&#128241; App version:</span><br>
     <span style='font-size:1.05em;color:#222;'>v2.0.0 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
@@ -604,73 +672,76 @@ if not ECHO_MODE:
 
 
     # Restore About This Project expander at the top
-    with st.sidebar.expander("ℹ️ About This Project", expanded=False):
-        st.markdown("""
-        Portfolio Project
-        - Secure, local AI chatbot for enterprise document Q&A
-        - Strict, typo-tolerant RBAC for salary, onboarding, and SOP
-        - Retrieval-Augmented Generation (RAG) with semantic search
-        - Unified, modern chat UI with persistent role/model display
-        - Modular, extensible Python/Streamlit codebase
-        - Robust audit logging and feedback evaluation
-        - Production-grade deployment and reproducible environments
+with st.sidebar.expander("ℹ️ About This Project", expanded=False):
+    st.markdown("""
+Portfolio Project
+- Secure, local AI chatbot for enterprise document Q&A
+- Strict, typo-tolerant RBAC for salary, onboarding, and SOP
+- Retrieval-Augmented Generation (RAG) with semantic search
+- Unified, modern chat UI with persistent role/model display
+- Modular, extensible Python/Streamlit codebase
+- Robust audit logging and feedback evaluation
+- Production-grade deployment and reproducible environments
+- **Persistent query logging and audit trail (CSV-based)**
+- **Collapsible log viewer with denial log filtering and selection**
 
-        **Target Audience:**
-        Technology executives, engineering leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
+**Target Audience:**
+Technology executives, engineering leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
 
-        **What This Demonstrates:**
-        - Deep LLM integration (Ollama, HuggingFace Transformers)
-        - Strict, typo-tolerant RBAC and audit logging
-        - Retrieval-Augmented Generation (RAG) pipeline
-        - Modern, role-preserved chat UI and feedback logging
-        - Clean architecture, modular code, and documentation
-        - Technical leadership and system design for enterprise AI
-    """, unsafe_allow_html=True)
-        with st.sidebar.expander("&#128193; Project Documentation", expanded=False):
-            st.markdown("**Project Documentation**")
-            st.markdown("[GitHub Repository](https://github.com/obizues/Local-AI-Chatbot-POC)")
-            st.markdown("**Documentation**")
-            st.markdown("- [README.md](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md): Project overview, quick start, features")
-            st.markdown("- [ARCHITECTURE.md](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md): Deep technical documentation and diagrams")
-            st.markdown("- System Diagrams: Mermaid diagrams for flow, components, and RAG")
-            st.markdown("**Key Sections:**\n- RBAC & Audit Logging\n- RAG & Semantic Search\n- LLM integration strategy\n- Production deployment guide\n- Architectural decision records")
-    with st.sidebar.expander("&#128295; Tech Stack", expanded=False):
-        st.markdown("""
-    <span style='font-size:1em;'>
-    <ul style='margin-bottom:0; padding-left: 18px;'>
-    <li>Python 3.10+</li>
-    <li>Streamlit (UI)</li>
-    <li>FAISS (vector search)</li>
-    <li>sentence-transformers (embeddings)</li>
-    <li>HuggingFace Transformers (LLM pipeline)</li>
-    <li>Ollama (local LLM, optional)</li>
-    <li>Flask (API integration)</li>
-    <li>pandas (data handling)</li>
-    <li>NumPy (vector math)</li>
-    <li>PyMuPDF (PDF ingestion)</li>
-    <li>python-docx (DOCX ingestion)</li>
-    <li>langchain, llama-index (optional, advanced retrieval)</li>
-    <li>pytest (testing, audit validation)</li>
-    </ul>
-    </span>
-    """, unsafe_allow_html=True)
-    with st.sidebar.expander("🧩 System Design Notes", expanded=False):
-        st.markdown("""
-    <span style='font-size:1em;'>
-    <ul style='margin-bottom:0; padding-left: 18px;'>
-    <li><b>Retrieval-Augmented Chat:</b> User questions are embedded and matched to relevant document chunks using FAISS, providing context for LLM answers.</li>
-    <li><b>Unified Chat Interface:</b> Streamlit UI displays chat history, model selection, and sidebar documentation in a single, modern layout.</li>
-    <li><b>Session State Management:</b> All chat history, selected model, and user context are stored in Streamlit session state for seamless multi-turn conversations.</li>
-    <li><b>Flexible LLM Backend:</b> Supports both local (Ollama) and HuggingFace LLMs, switchable via UI, with fallback and error handling for robustness.</li>
-    <li><b>Document Ingestion Pipeline:</b> Batch scripts process PDFs, DOCX, and text files, chunking and embedding them for fast semantic search.</li>
-    <li><b>Feedback Logging:</b> User queries, responses, and feedback are logged to CSV for evaluation and improvement.</li>
-    <li><b>Customizable Sidebar:</b> Sidebar provides About, Documentation, Tech Stack, and System Design Notes, all styled for clarity and mobile compatibility.</li>
-    <li><b>Real-Time UI Updates:</b> Chat and sidebar update instantly on user input, with scroll-to-bottom and feedback features for usability.</li>
-    <li><b>Extensible Architecture:</b> Modular codebase allows easy addition of new models, data sources, or UI features.</li>
-    <li><b>Observability:</b> Debug logs and error messages are written to local files for troubleshooting and transparency.</li>
-    <li><b>Resilience:</b> Graceful error handling ensures the app remains usable even if some components fail or are unavailable.</li>
-    <li><b>Infrastructure:</b> Designed for local use, but can be containerized or deployed on private servers as needed.</li>
-    </ul>
-    </span>
-    """, unsafe_allow_html=True)
+**What This Demonstrates:**
+- Deep LLM integration (Ollama, HuggingFace Transformers)
+- Strict, typo-tolerant RBAC and audit logging
+- Retrieval-Augmented Generation (RAG) pipeline
+- Modern, role-preserved chat UI and feedback logging
+- Clean architecture, modular code, and documentation
+- Technical leadership and system design for enterprise AI
+- **Persistent, filterable audit logs for all queries and denials**
+""", unsafe_allow_html=True)
+with st.sidebar.expander("&#128193; Project Documentation", expanded=False):
+    st.markdown("**Project Documentation**")
+    st.markdown("[GitHub Repository](https://github.com/obizues/Local-AI-Chatbot-POC)")
+    st.markdown("**Documentation**")
+    st.markdown("- [README.md](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md): Project overview, quick start, features")
+    st.markdown("- [ARCHITECTURE.md](https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md): Deep technical documentation and diagrams")
+    st.markdown("- System Diagrams: Mermaid diagrams for flow, components, and RAG")
+    st.markdown("**Key Sections:**\n- RBAC & Audit Logging\n- RAG & Semantic Search\n- LLM integration strategy\n- Production deployment guide\n- Architectural decision records")
+with st.sidebar.expander("&#128295; Tech Stack", expanded=False):
+    st.markdown("""
+<span style='font-size:1em;'>
+<ul style='margin-bottom:0; padding-left: 18px;'>
+<li>Python 3.10+</li>
+<li>Streamlit (UI)</li>
+<li>FAISS (vector search)</li>
+<li>sentence-transformers (embeddings)</li>
+<li>HuggingFace Transformers (LLM pipeline)</li>
+<li>Ollama (local LLM, optional)</li>
+<li>Flask (API integration)</li>
+<li>pandas (data handling)</li>
+<li>NumPy (vector math)</li>
+<li>PyMuPDF (PDF ingestion)</li>
+<li>python-docx (DOCX ingestion)</li>
+<li>langchain, llama-index (optional, advanced retrieval)</li>
+<li>pytest (testing, audit validation)</li>
+</ul>
+</span>
+""", unsafe_allow_html=True)
+with st.sidebar.expander("🧩 System Design Notes", expanded=False):
+    st.markdown("""
+<span style='font-size:1em;'>
+<ul style='margin-bottom:0; padding-left: 18px;'>
+<li><b>Retrieval-Augmented Chat:</b> User questions are embedded and matched to relevant document chunks using FAISS, providing context for LLM answers.</li>
+<li><b>Unified Chat Interface:</b> Streamlit UI displays chat history, model selection, and sidebar documentation in a single, modern layout.</li>
+<li><b>Session State Management:</b> All chat history, selected model, and user context are stored in Streamlit session state for seamless multi-turn conversations.</li>
+<li><b>Flexible LLM Backend:</b> Supports both local (Ollama) and HuggingFace LLMs, switchable via UI, with fallback and error handling for robustness.</li>
+<li><b>Document Ingestion Pipeline:</b> Batch scripts process PDFs, DOCX, and text files, chunking and embedding them for fast semantic search.</li>
+<li><b>Feedback Logging:</b> User queries, responses, and feedback are logged to CSV for evaluation and improvement.</li>
+<li><b>Customizable Sidebar:</b> Sidebar provides About, Documentation, Tech Stack, and System Design Notes, all styled for clarity and mobile compatibility.</li>
+<li><b>Real-Time UI Updates:</b> Chat and sidebar update instantly on user input, with scroll-to-bottom and feedback features for usability.</li>
+<li><b>Extensible Architecture:</b> Modular codebase allows easy addition of new models, data sources, or UI features.</li>
+<li><b>Observability:</b> Debug logs and error messages are written to local files for troubleshooting and transparency.</li>
+<li><b>Resilience:</b> Graceful error handling ensures the app remains usable even if some components fail or are unavailable.</li>
+<li><b>Infrastructure:</b> Designed for local use, but can be containerized or deployed on private servers as needed.</li>
+</ul>
+</span>
+""", unsafe_allow_html=True)
 st.markdown("**Security & Privacy:** All processing is local; no data leaves the user's environment. API keys and secrets are managed via environment variables and never committed to source control.", unsafe_allow_html=True)

@@ -1,8 +1,7 @@
 
 ## 🖼️ System Diagram
 
-> **Version:** v1.0.4 — March 2, 2026
-> **Version:** v2.0.0 — March 2, 2026
+> **Version:** v2.1.0 — March 2, 2026
 ```mermaid
 flowchart TD
    UserInput[User Input (UI)] --> ChatWindow[Chat Window (Streamlit)]
@@ -29,6 +28,7 @@ flowchart TD
 
 A hands-on AI project for private, local document Q&A and semantic search, featuring a modern, production-ready Python/Streamlit stack. Includes a unified chat UI, sidebar with documentation, tech stack, and system design notes, and robust feedback logging. Inspired by [agentic-mortgage-research](https://github.com/obizues/agentic-mortgage-research).
 
+
 ## Portfolio Project
 - Secure, local AI chatbot for enterprise document Q&A
 - Strict role-based access control (RBAC) for sensitive data
@@ -37,6 +37,8 @@ A hands-on AI project for private, local document Q&A and semantic search, featu
 - Modular, extensible Python/Streamlit codebase
 - Production-grade deployment and reproducible environments
 - Robust feedback logging and evaluation
+- **Persistent query logging and audit trail (CSV-based)**
+- **Collapsible log viewer with denial log filtering and selection**
 
 **Target Audience:**
 Technology executives, technology leaders, HR professionals, AI/ML practitioners, and technical decision-makers interested in secure document Q&A, RBAC enforcement, and advanced LLM-driven systems for enterprise use cases.
@@ -47,6 +49,7 @@ Technology executives, technology leaders, HR professionals, AI/ML practitioners
 - Unified, modern chat UI with persistent role/model display
 - Clean architecture, modular code, and documentation
 - Technical leadership and system design for enterprise AI
+- **Persistent, filterable audit logs for all queries and denials**
 
 ## 🚀 Quick Start
 

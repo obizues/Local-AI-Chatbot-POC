@@ -57,6 +57,8 @@ flowchart TD
 - Role-preserved chat history (each message stores the role at time of sending)
 - Advanced semantic search and retrieval (FAISS + SentenceTransformers)
 - Robust audit logging and feedback metrics
+- **Persistent query logging (CSV) for all user queries and responses**
+- **Collapsible log viewer in UI with denial log filtering and selection**
 
 ## System Components
 - **UI:** Streamlit-based chat interface (`ui/app.py`) with modern, right-aligned, bottom-aligned chat bubbles, persistent LLM/model display, and feedback controls
