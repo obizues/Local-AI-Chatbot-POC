@@ -559,6 +559,8 @@ with st.expander("Query Logs (Audit)", expanded=False):
         import pandas as pd
         logs_df = pd.DataFrame(logs_to_show)
         if not logs_df.empty:
+            # Convert all columns to string to avoid Arrow LargeUtf8 errors
+            logs_df = logs_df.astype(str)
             def highlight_denials(row):
                 color = 'background-color: #ffcccc;' if is_denial_true(row) else ''
                 return [color]*len(row)
