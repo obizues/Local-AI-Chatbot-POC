@@ -532,7 +532,6 @@ with st.form(key='chat_input_form', clear_on_submit=True):
         st.session_state['query_logs'].append(log_entry)
         append_query_log(log_entry)
         st.session_state.setdefault('history', []).append((user_input, bot_response, response_time, model_used, provenance, model_used, user_role))
-        st.experimental_rerun()
 
 # --- Collapsible Log Viewer at Bottom ---
 with st.expander("Query Logs (Audit)", expanded=False):
@@ -562,9 +561,10 @@ with st.expander("Query Logs (Audit)", expanded=False):
             # Convert all columns to string to avoid Arrow LargeUtf8 errors
             logs_df = logs_df.astype(str)
             import re
-            def strip_html(text):
-                return re.sub('<[^<]+?>', '', text) if isinstance(text, str) else text
-            logs_df['response'] = logs_df['response'].apply(strip_html)
+            def strip_html_and_truncate(text, maxlen=200):
+                txt = re.sub('<[^<]+?>', '', text) if isinstance(text, str) else text
+                return txt[:maxlen] + ('...' if txt and len(txt) > maxlen else '')
+            logs_df['response'] = logs_df['response'].apply(strip_html_and_truncate)
             st.dataframe(logs_df, height=250)
         else:
             st.info("No logs to display.")
