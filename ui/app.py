@@ -1,16 +1,23 @@
-import os
 import sys
+import os
 # Ensure project root is in sys.path for imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+import streamlit as st
+import os
+import pandas as pd
+import re
+import time
+import difflib
+
 # --- Persistent Query Log Utilities ---
-import csv
 LOG_CSV_PATH = os.path.join(os.path.dirname(__file__), '..', 'query_logs.csv')
 
 def load_query_logs():
     if os.path.exists(LOG_CSV_PATH):
+        import csv
         with open(LOG_CSV_PATH, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             return list(reader)
@@ -18,18 +25,17 @@ def load_query_logs():
         return []
 
 def append_query_log(log_entry):
+    import csv
     file_exists = os.path.exists(LOG_CSV_PATH)
     with open(LOG_CSV_PATH, 'a', encoding='utf-8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=['timestamp', 'user', 'query', 'response', 'denial'])
         if not file_exists:
             writer.writeheader()
-        # Convert boolean to string for CSV
         entry = log_entry.copy()
         entry['denial'] = str(entry['denial'])
         writer.writerow(entry)
 
-import streamlit as st
-import difflib
+
 # --- Initialize persistent query logs in session state ---
 if 'query_logs' not in st.session_state:
     logs = load_query_logs()
@@ -97,40 +103,24 @@ st.markdown(
             margin: 0 auto 0 auto;
             padding: 0.7em 0 0.7em 0;
             box-sizing: border-box;
-</style>
-
-            # --- Log Viewer UI ---
-            with st.expander('Query Log Viewer', expanded=False):
-                st.markdown('**Audit Trail:** All queries and responses are logged below. Use the filter to show only denial logs.')
-                show_only_denials = st.checkbox('Show only denial logs', value=st.session_state['show_only_denials'], key='show_only_denials')
-                # Filter logs based on checkbox
-                logs_to_display = st.session_state['query_logs']
-                if st.session_state['show_only_denials']:
-                    logs_to_display = [log for log in logs_to_display if str(log.get('denial', '')) == 'True']
-                # Display logs in a table
-                if logs_to_display:
-                    st.dataframe(pd.DataFrame(logs_to_display))
-                else:
-                    st.info('No logs to display for the selected filter.')
-
-            # ...existing code for chat input and chat history...
-
-<div class="app-title-banner">
-    <div class="name-title" style="font-size:0.95em; font-weight:400; margin-bottom:0.08em; text-align:center; color:#1976d2;"><b>Chris Obermeier</b> | SVP of Engineering</div>
-    <div class="subtitle" style="background:transparent;border-radius:0;padding:2px 8px;font-size:0.83em;text-align:center;margin-bottom:0.08em;color:#64b5f6;font-weight:400;">SVP Engineering | Enterprise Platform & AI Transformation | Led 100+ Engineer Orgs | PE & Revenue-Scale Modernization</div>
-    <div class="links" style="font-size:0.92em; font-weight:400; margin-bottom:0em; text-align:center;">
-        <a href="https://www.linkedin.com/in/chrisobermeier/" target="_blank">LinkedIn</a> |
-        <a href="https://github.com/obizues" target="_blank">GitHub</a> |
-        <a href="mailto:chris.obermeier@gmail.com" target="_blank">Email</a>
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+            letter-spacing: 0.01em;
+            max-width: 700px;
+        }
+        .main-title-banner .emoji {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.18em;
+            filter: none;
+        }
+    </style>
+    <div class="main-title-banner">
+        <span class="emoji">🤖</span> Local AI Governance Platform
     </div>
-    <div class="project-links" style="font-size:0.92em; font-weight:400; margin-top:0em; text-align:center;">
-        <span style="margin-right:4px;">&#11088;</span><a href="https://github.com/obizues/Local-AI-Chatbot-POC" target="_blank">Star on GitHub</a> |
-        <span style="margin-right:4px;">&#128214;</span><a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/README.md" target="_blank">Read Documentation</a> |
-        <span style="margin-right:4px;">&#127891;</span><a href="https://github.com/obizues/Local-AI-Chatbot-POC/blob/main/ARCHITECTURE.md" target="_blank">View Architecture</a>
-    </div>
-</div>
-"""
-st.markdown(app_title_banner, unsafe_allow_html=True)
+    """
+    , unsafe_allow_html=True
+)
 
 # --- RBAC: Role selection ---
 
@@ -188,8 +178,6 @@ metadata_path = os.path.join(os.path.dirname(__file__), '..', 'vector_db', 'meta
 chunks_path = os.path.join(os.path.dirname(__file__), '..', 'ingestion', 'document_chunks.csv')
 
 if 'metadata' not in st.session_state:
-        unsafe_allow_html=True
-    )
     st.session_state['metadata'] = load_metadata_once(metadata_path, chunks_path)
 metadata = st.session_state['metadata']
 

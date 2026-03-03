@@ -1,5 +1,3 @@
-
-
 # All imports at the top
 import os
 import re
@@ -26,7 +24,10 @@ def get_department_from_role(user_role):
     return None
 
 def route_query(user_input, user_role, metadata):
+    import time
+    start_time = time.time()
     # Deploy software SOP logic
+    step1 = time.time()
     if re.search(r'deploy software|deploy.*sop|how to deploy', user_input, re.IGNORECASE):
         # Only allow users with 'Engineer' in their title/role
         if 'engineer' in user_role.lower():
@@ -61,6 +62,7 @@ def route_query(user_input, user_role, metadata):
             return '<div style="color:#b71c1c;font-weight:bold;font-size:1.1em;">You do not have a need to access this.</div>', None
     # Onboarding guide logic
     if re.search(r'onboarding', user_input, re.IGNORECASE):
+        step2 = time.time()
         dept = get_department_from_role(user_role)
         if dept == 'HR':
             onboarding_path = os.path.join(os.path.dirname(__file__), '../mock_data/HR/hr_onboarding.md')
@@ -83,6 +85,7 @@ def route_query(user_input, user_role, metadata):
         print("DEBUG: Detected benefits query", flush=True)
         return get_benefits_text(), 'mock_data/HR/benefits_overview.txt'
     print("DEBUG: Detected salary query", flush=True)
+    step3 = time.time()
     # Otherwise, treat as salary query
     # Extract salaries from metadata
     salaries = []
@@ -96,6 +99,7 @@ def route_query(user_input, user_role, metadata):
                 title = match.group(3).strip() if match.group(3) else ''
                 salary = match.group(4).strip()
                 salaries.append((name, title, dept, salary))
+    step4 = time.time()
     # Defensive: if salaries is empty and metadata has columns Name, Title, Department, Salary, extract directly
     if not salaries and isinstance(metadata, pd.DataFrame):
         cols = [c.lower() for c in metadata.columns]
@@ -107,6 +111,7 @@ def route_query(user_input, user_role, metadata):
                 title = getattr(row, 'Title', '') if title_col else ''
                 salary = getattr(row, 'Salary', '')
                 salaries.append((name, title, dept, salary))
+    step5 = time.time()
     # Salary intent logic
     intent = detect_salary_intent(user_input)
     dept = get_department_from_role(user_role)
@@ -139,8 +144,16 @@ def route_query(user_input, user_role, metadata):
             visible_rows = get_salary_rows(user_role, salaries)
     if visible_rows:
         df = pd.DataFrame(visible_rows, columns=["Name", "Title", "Department", "Salary"])
+        df = df.astype(str)  # Convert all columns to string to avoid Arrow LargeUtf8 errors
         response = df.to_html(index=False, escape=False, border=0, classes="salary-table")
         provenance = 'mock_data/HR/payroll_confidential.txt'
+        end_time = time.time()
+        # Defensive: ensure all timing variables exist before printing
+        timing_vars = locals()
+        for var in ["step1", "step2", "step3", "step4", "step5"]:
+            if var not in timing_vars:
+                timing_vars[var] = start_time
+        print(f"TIMING: route_query total={end_time-start_time:.3f}s, step1={timing_vars['step1']-start_time:.3f}s, step2={timing_vars['step2']-timing_vars['step1']:.3f}s, step3={timing_vars['step3']-timing_vars['step2']:.3f}s, step4={timing_vars['step4']-timing_vars['step3']:.3f}s, step5={timing_vars['step5']-timing_vars['step4']:.3f}s, df_html={end_time-timing_vars['step5']:.3f}s", flush=True)
     else:
         # Access denied: log and show bold red message
         import datetime
