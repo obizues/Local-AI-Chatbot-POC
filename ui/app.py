@@ -273,8 +273,8 @@ with col2:
         # Use st.rerun() if available, else fallback to st.experimental_rerun()
         if hasattr(st, "rerun"):
             st.rerun()
-        elif hasattr(st, "experimental_rerun"):
-            st.experimental_rerun()
+        elif hasattr(st, "_rerun"):
+            st._rerun()
         else:
             pass  # No rerun available
 
@@ -539,6 +539,7 @@ with st.form(key='chat_input_form', clear_on_submit=True):
             st.experimental_rerun()
 
 # --- Collapsible Log Viewer at Bottom ---
+st.write("DEBUG: session_state['query_logs']:", st.session_state.get('query_logs', []))
 with st.expander("Query Logs (Audit)", expanded=False):
     logs = st.session_state.get('query_logs', [])
     show_denials_only = st.checkbox("Show only denial logs", value=False, key="show_denials_only")
@@ -627,11 +628,11 @@ with st.expander("Query Logs (Audit)", expanded=False):
                         return os.path.basename(str(file))
                 except Exception:
                     return os.path.basename(str(file))
-            if isinstance(sources, list) and sources:
+            if sources and isinstance(sources, list):
                 src_links = ', '.join([file_to_link(s) for s in sources])
                 src_html = f'<br><span style="font-size:0.85em;color:#1976d2;">Sources: {src_links}</span>'
                 chat_html += src_html
-            elif isinstance(sources, str) and sources:
+            elif sources and isinstance(sources, str):
                 chat_html += f'<br><span style="font-size:0.85em;color:#1976d2;">Source: {file_to_link(sources)}</span>'
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -639,49 +640,49 @@ st.markdown('</div>', unsafe_allow_html=True)
 # Collapsible sidebar sections (default collapsed)
 st.sidebar.markdown("""
 <div style='background:#eaf6ff;border:1.5px solid #b3e5fc;padding:10px 12px 8px 12px;margin-bottom:12px;text-align:center;border-radius:8px;'>
-    <span style='font-size:1.08em;font-weight:600;color:#1976d2;'>&#128241; App version:</span><br>
+    <span style='font-size:1.08em;font-weight:600;color:#1976d2;'>App version:</span><br>
     <span style='font-size:1.05em;color:#222;'>v2.2.0 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
 </div>
 <div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
     <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
-        <span style=\"font-size:1.05em;vertical-align:middle;\">&#129302;</span> AI Search & Knowledge System
+        <span style="font-size:1.05em;vertical-align:middle;">[AI]</span> AI Search & Knowledge System
     </div>
     <div style='margin:0 0 0 0;font-size:0.91em;line-height:1.35;text-align:center;'>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128269;</span> <span>Semantic Search (FAISS + SentenceTransformers)</span>
+            <span style="font-size:1em;">[Search]</span> <span>Semantic Search (FAISS + SentenceTransformers)</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128196;</span> <span>Document Q&amp;A (PDF, DOCX, TXT)</span>
+            <span style="font-size:1em;">[Doc]</span> <span>Document Q&amp;A (PDF, DOCX, TXT)</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128273;</span> <span>Enterprise-Grade RBAC & Audit Logging</span>
+            <span style="font-size:1em;">[Lock]</span> <span>Enterprise-Grade RBAC & Audit Logging</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128640;</span> <span>Retrieval-Augmented Generation (RAG)</span>
+            <span style="font-size:1em;">[RAG]</span> <span>Retrieval-Augmented Generation (RAG)</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128187;</span> <span>Modern, Unified Chat UI</span>
+            <span style="font-size:1em;">[UI]</span> <span>Modern, Unified Chat UI</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128221;</span> <span>Role-Preserved Chat History</span>
+            <span style="font-size:1em;">[History]</span> <span>Role-Preserved Chat History</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128202;</span> <span>Feedback, Metrics, and Logging</span>
+            <span style="font-size:1em;">[Metrics]</span> <span>Feedback, Metrics, and Logging</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128640;</span> <span>LLM: Ollama & HuggingFace</span>
+            <span style="font-size:1em;">[LLM]</span> <span>LLM: Ollama & HuggingFace</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128736;</span> <span>Fully Tested (pytest)</span>
+            <span style="font-size:1em;">[Test]</span> <span>Fully Tested (pytest)</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128737;</span> <span>Private, Local LLM</span>
+            <span style="font-size:1em;">[Private]</span> <span>Private, Local LLM</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#9889;</span> <span>Fast, Modern UI</span>
+            <span style="font-size:1em;">[Fast]</span> <span>Fast, Modern UI</span>
         </div>
         <div style='display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2px;'>
-            <span style=\"font-size:1em;\">&#128274;</span> <span>Strict Role-Based Access Control (RBAC)</span>
+            <span style="font-size:1em;">[RBAC]</span> <span>Strict Role-Based Access Control (RBAC)</span>
         </div>
     </div>
 </div>
