@@ -282,17 +282,13 @@ with col2:
     )
     if new_role != current_role:
         st.session_state['user_role'] = new_role
+        # Use st.rerun() if available, else fallback to st.experimental_rerun()
         if hasattr(st, "rerun"):
             st.rerun()
         elif hasattr(st, "experimental_rerun"):
-            if hasattr(st, "rerun"):
-                st.rerun()
-            elif hasattr(st, "experimental_rerun"):
-                st.experimental_rerun()
-            else:
-                st.warning("Streamlit rerun is not available in this version. Please upgrade Streamlit for full functionality.")
+            st.experimental_rerun()
         else:
-            st.warning("Streamlit rerun is not available in this version. Please upgrade Streamlit for full functionality.")
+            pass  # No rerun available
 
 
 # Map dropdown display names to valid HuggingFace model names
@@ -529,7 +525,14 @@ with st.form(key='chat_input_form', clear_on_submit=True):
         timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         from llm_backend.query_router import route_query
         bot_response, provenance = route_query(user_input, user_role, metadata)
-        is_denial = isinstance(bot_response, str) and ('Unauthorized access attempt' in bot_response or 'denied' in bot_response.lower())
+        def is_denial_true_for_log(response):
+            resp = str(response)
+            return (
+                'do not have access' in resp.lower() or
+                'unauthorized access attempt' in resp.lower() or
+                'denied' in resp.lower()
+            )
+        is_denial = is_denial_true_for_log(bot_response)
         log_entry = {
             'timestamp': timestamp,
             'user': user_role,
@@ -546,8 +549,6 @@ with st.form(key='chat_input_form', clear_on_submit=True):
             st.rerun()
         elif hasattr(st, "experimental_rerun"):
             st.experimental_rerun()
-        else:
-            st.warning("Streamlit rerun is not available in this version. Please upgrade Streamlit for full functionality.")
 
 # --- Collapsible Log Viewer at Bottom ---
 with st.expander("Query Logs (Audit)", expanded=False):
@@ -567,7 +568,10 @@ with st.expander("Query Logs (Audit)", expanded=False):
             'denied' in resp.lower()
         )
     if show_denials_only:
-        logs_to_show = [log for log in logs if is_denial_true(log)]
+        logs_to_show = [log.copy() for log in logs if is_denial_true(log)]
+        # Set 'denial' column to 'True' for all shown logs
+        for log in logs_to_show:
+            log['denial'] = 'True'
     else:
         logs_to_show = logs
     if logs_to_show:
@@ -624,7 +628,7 @@ with st.expander("Query Logs (Audit)", expanded=False):
         # Show source file for onboarding answers
         # Only show sources if not None, not empty, and not a denial/warning message
         sources = None  # Placeholder to avoid NameError
-        if sources and sources not in [None, '', [], 'None']:
+        if sources is not None and sources not in ['', [], 'None']:
             def file_to_link(file):
                 try:
                     rel_path = os.path.relpath(str(file), os.path.dirname(__file__))
@@ -648,7 +652,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.sidebar.markdown("""
 <div style='background:#eaf6ff;border:1.5px solid #b3e5fc;padding:10px 12px 8px 12px;margin-bottom:12px;text-align:center;border-radius:8px;'>
     <span style='font-size:1.08em;font-weight:600;color:#1976d2;'>&#128241; App version:</span><br>
-    <span style='font-size:1.05em;color:#222;'>v2.2.2 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
+    <span style='font-size:1.05em;color:#222;'>v2.2.0 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
 </div>
 <div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
     <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
