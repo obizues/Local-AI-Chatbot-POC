@@ -574,6 +574,8 @@ with st.expander('Query Log Viewer', expanded=False):
     if logs_to_display:
         import pandas as pd
         df = pd.DataFrame(logs_to_display)
+        # Convert all columns to string to avoid LargeUtf8 type errors in Streamlit
+        df = df.astype(str)
         def highlight_denials(row):
             color = 'background-color: #ffcccc; color: #b71c1c;' if str(row['denial']).lower() == 'true' else ''
             return [color] * len(row)
