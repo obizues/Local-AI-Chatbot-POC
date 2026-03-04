@@ -600,9 +600,10 @@ with st.expander('Query Log Viewer', expanded=False):
                     s = s[:500] + '... [truncated]'
                 new_entry[k] = s
             return new_entry
-        processed_logs = [preprocess_log_entry(log) for log in logs_to_display]
+        # Limit to last 100 entries for compatibility
+        processed_logs = [preprocess_log_entry(log) for log in logs_to_display[-100:]]
         df = pd.DataFrame(processed_logs)
-        st.dataframe(df)
+        st.table(df)
     else:
         st.info('No logs to display for the selected filter.')
 
@@ -611,7 +612,7 @@ with st.expander('Query Log Viewer', expanded=False):
 st.sidebar.markdown("""
 <div style='background:#eaf6ff;border:1.5px solid #b3e5fc;padding:10px 12px 8px 12px;margin-bottom:12px;text-align:center;border-radius:8px;'>
     <span style='font-size:1.08em;font-weight:600;color:#1976d2;'>&#128241; App version:</span><br>
-    <span style='font-size:1.05em;color:#222;'>v2.1.7 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
+    <span style='font-size:1.05em;color:#222;'>v2.1.8 - Enterprise RBAC, RAG, Audit Logging, Modern UI</span>
 </div>
 <div class='sidebar-card' style='background:#eaf6ff;font-size:0.93em;margin-bottom:16px;border:1.5px solid #b3e5fc;padding:8px 8px 6px 8px;'>
     <div style='font-weight:700;font-size:1em;line-height:1.2;margin-bottom:2px;text-align:center;'>
