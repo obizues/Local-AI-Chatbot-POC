@@ -10,29 +10,17 @@ import csv
 LOG_CSV_PATH = os.path.join(os.path.dirname(__file__), '..', 'query_logs.csv')
 
 def load_query_logs():
-    if os.path.exists(LOG_CSV_PATH):
-        with open(LOG_CSV_PATH, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            return list(reader)
-    else:
-        st.info("No logs to display.")
+    # On Streamlit Cloud, use only session_state for logs
+    return st.session_state.get('query_logs', [])
 
 def append_query_log(log_entry):
-    file_exists = os.path.exists(LOG_CSV_PATH)
-    with open(LOG_CSV_PATH, 'a', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['timestamp', 'user', 'query', 'response', 'denial'])
-        if not file_exists:
-            writer.writeheader()
-        # Convert boolean to string for CSV
-        entry = log_entry.copy()
-        entry['denial'] = str(entry['denial'])
-        writer.writerow(entry)
+    # On Streamlit Cloud, do not write to file
+    pass
 
 # --- Initialize persistent query logs in session state ---
 import streamlit as st
 if 'query_logs' not in st.session_state:
-    logs = load_query_logs()
-    st.session_state['query_logs'] = logs if logs is not None else []
+    st.session_state['query_logs'] = []
 import pandas as pd
 import faiss
 import re
@@ -106,7 +94,7 @@ st.markdown(
         }
     </style>
     <div class="main-title-banner">
-        <span class="emoji">🤖</span> Local AI Chatbot POC
+        <span class="emoji">🤖</span> Local AI Governance Platform
     </div>
     """, unsafe_allow_html=True)
 
@@ -174,7 +162,7 @@ app_title_banner = """
 
 <div class="app-title-banner">
     <div class="name-title" style="font-size:0.95em; font-weight:400; margin-bottom:0.08em; text-align:center; color:#1976d2;"><b>Chris Obermeier</b> | SVP of Engineering</div>
-    <div class="subtitle" style="background:transparent;border-radius:0;padding:2px 8px;font-size:0.83em;text-align:center;margin-bottom:0.08em;color:#64b5f6;font-weight:400;">Enterprise &amp; PE-Backed Platform Modernization | AI &amp; Data-Driven Transformation</div>
+    <div class="subtitle" style="background:transparent;border-radius:0;padding:2px 8px;font-size:0.83em;text-align:center;margin-bottom:0.08em;color:#64b5f6;font-weight:400;">Enterprise Platform & AI Transformation | Led 100+ Engineer Orgs | PE & Revenue-Scale Modernization</div>
     <div class="links" style="font-size:0.92em; font-weight:400; margin-bottom:0em; text-align:center;">
         <a href="https://www.linkedin.com/in/chris-obermeier/" target="_blank">LinkedIn</a> |
         <a href="https://github.com/obizues" target="_blank">GitHub</a> |
